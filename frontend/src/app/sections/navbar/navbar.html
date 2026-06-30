@@ -4,7 +4,7 @@
   <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4">
 
     <!-- Logo -->
-    <a href="#" class="flex items-center gap-2">
+    <a routerLink="/" class="flex items-center gap-2">
       <span class="grid h-9 w-9 place-items-center rounded-xl
                    bg-gradient-to-br from-violet-600 to-pink-500 text-white">✦</span>
       <span class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">
@@ -15,10 +15,30 @@
     <!-- Meniu central (pill) -->
     <div class="hidden items-center gap-1 rounded-2xl border border-slate-200/70
                 bg-slate-100/60 p-1 dark:border-white/10 dark:bg-white/5 lg:flex">
-      <a href="#calculator" class="rounded-xl px-4 py-2 text-sm font-medium
-                  text-slate-700 hover:bg-white dark:text-slate-200 dark:hover:bg-white/10">
-        Calculate
-      </a>
+
+      <!-- Dropdown "Calculate" -->
+      <div class="relative">
+        <button type="button" (click)="menuOpen.set(!menuOpen())"
+                class="flex items-center gap-1 rounded-xl px-4 py-2 text-sm font-medium
+                       text-slate-700 hover:bg-white dark:text-slate-200 dark:hover:bg-white/10">
+          💡 Calculate
+          <span class="transition-transform" [class.rotate-180]="menuOpen()">⌄</span>
+        </button>
+
+        @if (menuOpen()) {
+          <div class="absolute left-0 top-full mt-2 w-56 rounded-2xl border border-slate-200/70
+                      bg-white p-2 shadow-xl dark:border-white/10 dark:bg-slate-900">
+            @for (page of calcPages; track page.path) {
+              <a [routerLink]="page.path" (click)="menuOpen.set(false)"
+                 class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium
+                        text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/10">
+                <span class="text-lg">{{ page.icon }}</span> {{ page.label }}
+              </a>
+            }
+          </div>
+        }
+      </div>
+
       <a href="#pricing" class="rounded-xl px-4 py-2 text-sm font-medium
                   text-slate-700 hover:bg-white dark:text-slate-200 dark:hover:bg-white/10">
         Pricing
@@ -31,7 +51,6 @@
 
     <!-- Actiuni dreapta -->
     <div class="flex items-center gap-2">
-      <!-- Buton tema (soare / luna) -->
       <button type="button" (click)="theme.toggle()"
               [attr.aria-label]="theme.theme() === 'dark' ? 'Activeaza tema luminoasa' : 'Activeaza tema intunecata'"
               class="grid h-10 w-10 place-items-center rounded-xl border
@@ -49,7 +68,7 @@
         Log in
       </a>
 
-      <a href="#calculator" class="rounded-xl bg-gradient-to-r from-violet-600 to-pink-500
+      <a routerLink="/" class="rounded-xl bg-gradient-to-r from-violet-600 to-pink-500
                   px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-500/25
                   hover:opacity-90">
         ✨ Get Started
