@@ -17,7 +17,7 @@
 # Render (ex. https://astra-backend.onrender.com) dupa ce-l deployezi.
 [[redirects]]
   from = "/api/*"
-  to = "https://YOUR-BACKEND.onrender.com/api/:splat"
+  to = "https://astra-backend-tzx7.onrender.com/api/:splat"
   status = 200
   force = true
 
