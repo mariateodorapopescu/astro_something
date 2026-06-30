@@ -17,6 +17,7 @@ import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { About } from './pages/about/about';
 import { Privacy } from './pages/privacy/privacy';
+import { CookiePolicy, TermsOfService, LegalDisclaimer } from './pages/legal/legal-pages';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'ASTRA — Cosmic Map Calculator' },
@@ -36,5 +37,8 @@ export const routes: Routes = [
   { path: 'register', component: Register, title: 'ASTRA — Create account' },
   { path: 'about', component: About, title: 'ASTRA — About Us' },
   { path: 'privacy-policy', component: Privacy, title: 'ASTRA — Privacy Policy' },
+  { path: 'cookie-policy', component: CookiePolicy, title: 'ASTRA — Cookie Policy' },
+  { path: 'terms-of-service', component: TermsOfService, title: 'ASTRA — Terms of Service' },
+  { path: 'legal-disclaimer', component: LegalDisclaimer, title: 'ASTRA — Legal Disclaimer' },
   { path: '**', redirectTo: '' },
 ];

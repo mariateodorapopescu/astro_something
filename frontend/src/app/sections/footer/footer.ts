@@ -20,8 +20,9 @@ export class Footer {
     { title: 'Information', links: [
       { label: 'About Us', path: '/about' },
       { label: 'Privacy Policy', path: '/privacy-policy' },
-      { label: 'Cookie Policy', path: '/privacy-policy' },
-      { label: 'Terms of Service', path: '/privacy-policy' },
+      { label: 'Cookie Policy', path: '/cookie-policy' },
+      { label: 'Terms of Service', path: '/terms-of-service' },
+      { label: 'Legal Disclaimer', path: '/legal-disclaimer' },
       { label: 'Help Center', path: '/help' },
       { label: 'Contact', path: '/contact' },
     ] },
