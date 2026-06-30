@@ -32,7 +32,7 @@ services:
       # De unde acceptam cereri. Inlocuieste cu URL-ul tau real de Netlify
       # dupa ce deployezi frontend-ul (ex. https://astra-app.netlify.app).
       - key: CORS_ORIGINS
-        value: https://YOUR-SITE.netlify.app
+        value: https://astro-something.netlify.app/
       # Versiunea de Python folosita la build.
       - key: PYTHON_VERSION
         value: "3.12.7"
