@@ -1,0 +1,56 @@
+<section class="mx-auto flex min-h-[80vh] max-w-md flex-col justify-center px-4 py-16">
+  <div class="rounded-3xl border border-slate-200/70 bg-white/70 p-8 shadow-xl
+              dark:border-white/10 dark:bg-white/5 sm:p-10">
+    <p class="text-center text-xl font-extrabold tracking-tight">
+      <span class="text-gradient">ASTRA</span><span class="text-slate-500">.app</span>
+    </p>
+    <h1 class="mt-6 text-center text-3xl font-extrabold text-slate-900 dark:text-white">Welcome back!</h1>
+    <p class="mt-1 text-center text-slate-500 dark:text-slate-400">Log in to continue</p>
+
+    <form (ngSubmit)="submit()" class="mt-8 space-y-5">
+      <label class="block">
+        <span class="mb-1 block text-sm font-medium text-slate-600 dark:text-slate-300">Email address</span>
+        <input type="email" [(ngModel)]="email" name="email" placeholder="your@email.com"
+               class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900
+                      outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/30
+                      dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder-slate-500" />
+      </label>
+
+      <label class="block">
+        <span class="mb-1 flex items-center justify-between text-sm font-medium text-slate-600 dark:text-slate-300">
+          Password
+          <a href="#" class="text-violet-600 hover:underline dark:text-violet-300">Forgot your password?</a>
+        </span>
+        <input type="password" [(ngModel)]="password" name="password" placeholder="Your password"
+               class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900
+                      outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/30
+                      dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder-slate-500" />
+      </label>
+
+      <label class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+        <input type="checkbox" [(ngModel)]="remember" name="remember" class="h-4 w-4 accent-violet-600" />
+        Remember me
+      </label>
+
+      <button type="submit"
+              class="w-full rounded-xl bg-gradient-to-r from-violet-600 to-pink-500 px-6 py-3.5
+                     font-bold text-white shadow-lg shadow-violet-500/30 hover:opacity-90">
+        Log in
+      </button>
+    </form>
+
+    @if (message()) {
+      <p class="mt-4 rounded-xl bg-violet-50 p-3 text-center text-sm text-violet-800
+                dark:bg-violet-500/10 dark:text-violet-200">{{ message() }}</p>
+    }
+
+    <div class="my-6 flex items-center gap-3 text-sm text-slate-400">
+      <span class="h-px flex-1 bg-slate-200 dark:bg-white/10"></span> or <span class="h-px flex-1 bg-slate-200 dark:bg-white/10"></span>
+    </div>
+
+    <p class="text-center text-slate-600 dark:text-slate-400">
+      Don't have an account?
+      <a routerLink="/register" class="font-semibold text-violet-600 hover:underline dark:text-violet-300">Register for free</a>
+    </p>
+  </div>
+</section>

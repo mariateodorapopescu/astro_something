@@ -13,6 +13,9 @@ import { Knowledge } from './pages/knowledge/knowledge';
 import { Tarot } from './pages/tarot/tarot';
 import { Contact } from './pages/contact/contact';
 import { Help } from './pages/help/help';
+import { Login } from './pages/login/login';
+import { Register } from './pages/register/register';
+import { About } from './pages/about/about';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'ASTRA — Cosmic Map Calculator' },
@@ -28,5 +31,8 @@ export const routes: Routes = [
   { path: 'tarot', component: Tarot, title: 'ASTRA — Tarot Online' },
   { path: 'contact', component: Contact, title: 'ASTRA — Contact' },
   { path: 'help', component: Help, title: 'ASTRA — Help Center' },
+  { path: 'login', component: Login, title: 'ASTRA — Log in' },
+  { path: 'register', component: Register, title: 'ASTRA — Create account' },
+  { path: 'about', component: About, title: 'ASTRA — About Us' },
   { path: '**', redirectTo: '' },
 ];

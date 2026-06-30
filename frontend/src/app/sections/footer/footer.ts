@@ -18,7 +18,7 @@ export class Footer {
       { label: 'Pricing', path: '/pricing' },
     ] },
     { title: 'Information', links: [
-      { label: 'About Us', path: '#' },
+      { label: 'About Us', path: '/about' },
       { label: 'Privacy Policy', path: '#' },
       { label: 'Cookie Policy', path: '#' },
       { label: 'Terms of Service', path: '#' },
@@ -26,8 +26,8 @@ export class Footer {
       { label: 'Contact', path: '/contact' },
     ] },
     { title: 'Account', links: [
-      { label: 'Log in', path: '#' },
-      { label: 'Create Account', path: '#' },
+      { label: 'Log in', path: '/login' },
+      { label: 'Create Account', path: '/register' },
     ] },
   ];
 
