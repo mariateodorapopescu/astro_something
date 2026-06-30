@@ -29,5 +29,6 @@ export class Navbar {
   discoverPages = [
     { path: '/horoscope', label: 'Daily Horoscope', icon: '🔮' },
     { path: '/ascendant-calculator', label: 'Ascendant Calculator', icon: '↑' },
+    { path: '/blog', label: 'Blog', icon: '📰' },
   ];
 }

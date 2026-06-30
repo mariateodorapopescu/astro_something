@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { Prose } from '../../sections/prose/prose';
+import { Faq, FaqItem } from '../../sections/faq/faq';
 
 @Component({
   selector: 'app-ascendant',
-  imports: [FormsModule, RouterLink, Prose],
+  imports: [FormsModule, RouterLink, Prose, Faq],
   templateUrl: './ascendant.html',
 })
 export class Ascendant {
@@ -45,5 +46,13 @@ export class Ascendant {
     { name: 'Capricorn', symbol: '♑', element: 'Earth', planet: 'Saturn' },
     { name: 'Aquarius', symbol: '♒', element: 'Air', planet: 'Uranus' },
     { name: 'Pisces', symbol: '♓', element: 'Water', planet: 'Neptune' },
+  ];
+
+  faqItems: FaqItem[] = [
+    { q: 'What is the difference between ascendant and zodiac sign?', a: 'Your zodiac (Sun) sign reflects your inner essence, while the ascendant reflects how others perceive you — your outward first impression.' },
+    { q: 'Why do I need an exact birth time?', a: 'The ascendant changes about every 2 hours, so even a small difference in time can change your rising sign.' },
+    { q: 'Can I calculate my ascendant without a birth time?', a: 'A rough estimate is possible, but the result may be inaccurate. For a reliable ascendant, an exact birth time is needed.' },
+    { q: 'How accurate is this calculator?', a: 'It uses precise astronomical calculations, so with an accurate birth time and place the result is reliable.' },
+    { q: 'What is the "Big Three"?', a: 'Your Sun sign, Moon sign and Ascendant together — the three pillars that shape your astrological profile.' },
   ];
 }
