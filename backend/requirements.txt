@@ -1,0 +1,10 @@
+# Framework-ul web (rapid, modern, cu documentatie automata)
+fastapi==0.115.6
+# Serverul care ruleaza FastAPI in timpul dezvoltarii
+uvicorn[standard]==0.34.0
+# ORM = vorbim cu baza de date in Python, nu in SQL pur
+sqlalchemy==2.0.36
+# Driverul de PostgreSQL pentru Python
+psycopg2-binary==2.9.10
+# Citeste setarile (parole etc.) din fisierul .env
+pydantic-settings==2.7.1

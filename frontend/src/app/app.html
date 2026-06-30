@@ -1,0 +1,13 @@
+<main class="page">
+  <section class="card">
+    <h1>{{ title() }} ✨</h1>
+    <p>Proiectul tau Angular ruleaza. De aici incepem designul.</p>
+
+    <div class="status">
+      Backend:
+      <strong [class.ok]="backendStatus() === 'ok'">{{ backendStatus() }}</strong>
+    </div>
+  </section>
+
+  <router-outlet />
+</main>
