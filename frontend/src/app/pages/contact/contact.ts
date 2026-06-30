@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { ApiService } from '../../api.service';
 import { Faq, FaqItem } from '../../sections/faq/faq';
 
 @Component({
@@ -9,12 +10,15 @@ import { Faq, FaqItem } from '../../sections/faq/faq';
   templateUrl: './contact.html',
 })
 export class Contact {
+  private api = inject(ApiService);
+
   name = signal('');
   email = signal('');
   category = signal('');
   subject = signal('');
   message = signal('');
   sent = signal(false);
+  error = signal<string | null>(null);
 
   categories = ['General question', 'Billing', 'Technical issue', 'Feedback', 'Other'];
 
@@ -26,8 +30,14 @@ export class Contact {
   ];
 
   send(): void {
+    this.error.set(null);
     if (!this.name() || !this.email() || !this.subject() || !this.message()) return;
-    // TODO: trimite mesajul catre backend (/api/contact).
-    this.sent.set(true);
+    this.api.contact({
+      name: this.name(), email: this.email(), subject: this.subject(),
+      message: this.message(), category: this.category(),
+    }).subscribe({
+      next: () => this.sent.set(true),
+      error: () => this.error.set('Nu pot contacta backend-ul. Pornește serverul Python (uvicorn).'),
+    });
   }
 }

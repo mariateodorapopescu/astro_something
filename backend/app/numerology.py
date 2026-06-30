@@ -86,6 +86,54 @@ def compatibility(name1: str, d1: date, name2: str, d2: date) -> dict:
     }
 
 
+# --- Human Design (simplificat, determinist) ---
+HD_TYPES = [
+    ("Generator", "Wait to respond", "Sacral", "~37% din populatie"),
+    ("Manifesting Generator", "Wait to respond, then inform", "Sacral", "~33% din populatie"),
+    ("Projector", "Wait for the invitation", "Splenic / Emotional", "~20% din populatie"),
+    ("Manifestor", "Inform before you act", "Emotional / Splenic", "~8% din populatie"),
+    ("Reflector", "Wait a full lunar cycle", "Lunar", "~1% din populatie"),
+]
+
+
+def human_design(name: str, birth_date: date) -> dict:
+    """Alege un tip de energie pe baza datei nasterii (determinist, demonstrativ)."""
+    idx = (
+        _digit_sum(birth_date.day)
+        + _digit_sum(birth_date.month)
+        + _digit_sum(birth_date.year)
+    ) % len(HD_TYPES)
+    type_name, strategy, authority, share = HD_TYPES[idx]
+    return {
+        "type": type_name,
+        "strategy": strategy,
+        "authority": authority,
+        "population": share,
+        "summary": f"{name}, tipul tau de energie este {type_name} — strategie: {strategy.lower()}.",
+    }
+
+
+# --- Ascendent / rising sign (simplificat, determinist) ---
+ZODIAC = [
+    "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
+    "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces",
+]
+
+
+def ascendant(birth_date: date, hour: int, place: str) -> dict:
+    """Estimeaza semnul ascendent. Ascendentul se schimba ~la 2 ore,
+    deci rotim prin cele 12 semne in functie de ora + luna (demonstrativ)."""
+    idx = (birth_date.month - 1 + (max(0, min(23, hour)) // 2)) % 12
+    sign = ZODIAC[idx]
+    return {
+        "sign": sign,
+        "summary": (
+            f"Pe baza datei si orei nasterii in {place or 'locul indicat'}, "
+            f"ascendentul tau estimat este {sign}."
+        ),
+    }
+
+
 def calculate(name: str, birth_date: date) -> dict:
     """Calculul complet returnat clientului."""
     lp = life_path(birth_date)

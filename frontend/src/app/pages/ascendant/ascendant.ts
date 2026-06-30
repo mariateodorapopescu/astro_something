@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
+import { ApiService, AscendantResult } from '../../api.service';
 import { Prose } from '../../sections/prose/prose';
 import { Faq, FaqItem } from '../../sections/faq/faq';
 
@@ -11,19 +12,32 @@ import { Faq, FaqItem } from '../../sections/faq/faq';
   templateUrl: './ascendant.html',
 })
 export class Ascendant {
+  private api = inject(ApiService);
+
   birthDate = signal('');
   hour = signal('');
   minute = signal('');
   place = signal('');
-  result = signal<string | null>(null);
+
+  loading = signal(false);
+  error = signal<string | null>(null);
+  result = signal<AscendantResult | null>(null);
 
   calculate(): void {
+    this.error.set(null);
+    this.result.set(null);
     if (!this.birthDate() || !this.hour() || !this.place()) {
-      this.result.set('Completeaza data, ora si locul nasterii pentru un rezultat precis.');
+      this.error.set('Completeaza data, ora si locul nasterii pentru un rezultat precis.');
       return;
     }
-    // TODO: apel catre backend (calcul astronomic real).
-    this.result.set('Ascendentul tau se calculeaza pe baza datelor introduse...');
+    this.loading.set(true);
+    this.api.ascendant(this.birthDate(), Number(this.hour()) || 0, this.place()).subscribe({
+      next: (res) => { this.result.set(res); this.loading.set(false); },
+      error: () => {
+        this.error.set('Nu pot contacta backend-ul. Pornește serverul Python (uvicorn).');
+        this.loading.set(false);
+      },
+    });
   }
 
   whatIs = [

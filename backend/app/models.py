@@ -27,3 +27,43 @@ class Partnership(Base):
     name2 = Column(String, nullable=False)
     score = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class HumanDesignCalc(Base):
+    """Un calcul de Human Design."""
+    __tablename__ = "human_designs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    energy_type = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class AscendantCalc(Base):
+    """Un calcul de ascendent."""
+    __tablename__ = "ascendants"
+
+    id = Column(Integer, primary_key=True, index=True)
+    sign = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class Subscriber(Base):
+    """Un abonat la newsletter."""
+    __tablename__ = "subscribers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class ContactMessage(Base):
+    """Un mesaj trimis prin formularul de contact."""
+    __tablename__ = "contact_messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    subject = Column(String, nullable=False)
+    message = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)

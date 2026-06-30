@@ -10,13 +10,27 @@ from sqlalchemy.orm import Session
 from . import numerology
 from .config import settings
 from .database import Base, engine, get_db
-from .models import Calculation, Partnership
+from .models import (
+    AscendantCalc,
+    Calculation,
+    ContactMessage,
+    HumanDesignCalc,
+    Partnership,
+    Subscriber,
+)
 from .schemas import (
+    AscendantRequest,
+    AscendantResponse,
     CalculateRequest,
     CalculateResponse,
     CalculationItem,
+    ContactRequest,
+    HumanDesignRequest,
+    HumanDesignResponse,
+    OkResponse,
     PartnershipRequest,
     PartnershipResponse,
+    SubscribeRequest,
 )
 
 # Creeaza automat tabelele in baza de date (daca nu exista deja).
@@ -70,6 +84,44 @@ def calculate_partnership(req: PartnershipRequest, db: Session = Depends(get_db)
     db.commit()
 
     return result
+
+
+@app.post("/api/human-design", response_model=HumanDesignResponse)
+def human_design(req: HumanDesignRequest, db: Session = Depends(get_db)):
+    """Calculeaza tipul de energie Human Design, il salveaza si il returneaza."""
+    result = numerology.human_design(req.name, req.birth_date)
+    db.add(HumanDesignCalc(name=req.name, energy_type=result["type"]))
+    db.commit()
+    return result
+
+
+@app.post("/api/ascendant", response_model=AscendantResponse)
+def ascendant(req: AscendantRequest, db: Session = Depends(get_db)):
+    """Estimeaza semnul ascendent, il salveaza si il returneaza."""
+    result = numerology.ascendant(req.birth_date, req.hour, req.place)
+    db.add(AscendantCalc(sign=result["sign"]))
+    db.commit()
+    return result
+
+
+@app.post("/api/subscribe", response_model=OkResponse)
+def subscribe(req: SubscribeRequest, db: Session = Depends(get_db)):
+    """Salveaza un email la newsletter (ignora duplicatele)."""
+    exists = db.query(Subscriber).filter(Subscriber.email == req.email).first()
+    if not exists:
+        db.add(Subscriber(email=req.email))
+        db.commit()
+    return {"ok": True, "message": "Te-ai abonat cu succes!"}
+
+
+@app.post("/api/contact", response_model=OkResponse)
+def contact(req: ContactRequest, db: Session = Depends(get_db)):
+    """Salveaza un mesaj de contact."""
+    db.add(ContactMessage(
+        name=req.name, email=req.email, subject=req.subject, message=req.message,
+    ))
+    db.commit()
+    return {"ok": True, "message": "Mesajul tau a fost trimis!"}
 
 
 @app.get("/api/calculations", response_model=list[CalculationItem])

@@ -23,6 +23,24 @@ export interface PartnershipResult {
   summary: string;
 }
 
+export interface HumanDesignResult {
+  type: string;
+  strategy: string;
+  authority: string;
+  population: string;
+  summary: string;
+}
+
+export interface AscendantResult {
+  sign: string;
+  summary: string;
+}
+
+export interface OkResult {
+  ok: boolean;
+  message: string;
+}
+
 /**
  * Serviciu pentru a vorbi cu backend-ul Python.
  * Cererile catre "/api/..." sunt redirectate spre backend (vezi proxy.conf.json).
@@ -50,5 +68,29 @@ export class ApiService {
     return this.http.post<PartnershipResult>('/api/calculate-partnership', {
       name1, birth_date1: birthDate1, name2, birth_date2: birthDate2,
     });
+  }
+
+  /** Tipul de energie Human Design. */
+  humanDesign(name: string, birthDate: string): Observable<HumanDesignResult> {
+    return this.http.post<HumanDesignResult>('/api/human-design', {
+      name, birth_date: birthDate,
+    });
+  }
+
+  /** Semnul ascendent. */
+  ascendant(birthDate: string, hour: number, place: string): Observable<AscendantResult> {
+    return this.http.post<AscendantResult>('/api/ascendant', {
+      birth_date: birthDate, hour, place,
+    });
+  }
+
+  /** Abonare la newsletter. */
+  subscribe(email: string): Observable<OkResult> {
+    return this.http.post<OkResult>('/api/subscribe', { email });
+  }
+
+  /** Trimite un mesaj de contact. */
+  contact(data: { name: string; email: string; subject: string; message: string; category: string }): Observable<OkResult> {
+    return this.http.post<OkResult>('/api/contact', data);
   }
 }

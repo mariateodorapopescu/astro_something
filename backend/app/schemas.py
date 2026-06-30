@@ -38,6 +38,47 @@ class PartnershipResponse(BaseModel):
     summary: str
 
 
+class HumanDesignRequest(BaseModel):
+    name: str
+    birth_date: date
+
+
+class HumanDesignResponse(BaseModel):
+    type: str
+    strategy: str
+    authority: str
+    population: str
+    summary: str
+
+
+class AscendantRequest(BaseModel):
+    birth_date: date
+    hour: int = 0
+    place: str = ""
+
+
+class AscendantResponse(BaseModel):
+    sign: str
+    summary: str
+
+
+class SubscribeRequest(BaseModel):
+    email: str
+
+
+class ContactRequest(BaseModel):
+    name: str
+    email: str
+    subject: str
+    message: str
+    category: str = ""
+
+
+class OkResponse(BaseModel):
+    ok: bool
+    message: str
+
+
 class CalculationItem(BaseModel):
     """Un calcul salvat (pentru lista cu cele recente)."""
     id: int

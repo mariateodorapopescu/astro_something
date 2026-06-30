@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
+import { ApiService, HumanDesignResult } from '../../api.service';
 import { Prose } from '../../sections/prose/prose';
 import { HowItWorks, Step } from '../../sections/how-it-works/how-it-works';
 import { Features, FeatureCard } from '../../sections/features/features';
@@ -13,19 +14,32 @@ import { Faq, FaqItem } from '../../sections/faq/faq';
   templateUrl: './human-design.html',
 })
 export class HumanDesign {
+  private api = inject(ApiService);
+
   name = signal('');
   birthDate = signal('');
   birthTime = signal('');
   birthPlace = signal('');
-  result = signal<string | null>(null);
+
+  loading = signal(false);
+  error = signal<string | null>(null);
+  result = signal<HumanDesignResult | null>(null);
 
   calculate(): void {
+    this.error.set(null);
+    this.result.set(null);
     if (!this.name() || !this.birthDate()) {
-      this.result.set('Completeaza numele si data nasterii.');
+      this.error.set('Completeaza numele si data nasterii.');
       return;
     }
-    // TODO: apel catre backend pentru calculul real al BodyGraph-ului.
-    this.result.set(`BodyGraph-ul lui ${this.name()} se calculeaza...`);
+    this.loading.set(true);
+    this.api.humanDesign(this.name(), this.birthDate()).subscribe({
+      next: (res) => { this.result.set(res); this.loading.set(false); },
+      error: () => {
+        this.error.set('Nu pot contacta backend-ul. Pornește serverul Python (uvicorn).');
+        this.loading.set(false);
+      },
+    });
   }
 
   // Statisticile afisate sub titlu.
