@@ -1,19 +1,13 @@
-<!-- Fundalul intregii pagini: gradient subtil, diferit pe light vs dark -->
+<!-- Layout comun pentru toate paginile: navbar sus, continutul rutei la mijloc,
+     newsletter + footer jos. Pop-up-ul tarot sta peste tot. -->
 <div class="min-h-screen bg-gradient-to-b from-violet-50 via-white to-sky-50
             text-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 dark:text-white">
   <app-navbar />
   <main>
-    <app-hero />
-    <app-how-it-works />
-    <app-features />
-    <app-testimonials />
-    <app-pricing />
-    <app-faq />
-    <app-cta />
-    <app-newsletter />
+    <router-outlet />
   </main>
+  <app-newsletter />
   <app-footer />
 
-  <!-- Pop-up tarot (exit-intent), stă peste tot -->
   <app-tarot-modal />
 </div>
