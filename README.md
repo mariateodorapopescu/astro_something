@@ -266,6 +266,49 @@ Daca vrei sa lucrezi doar la design, e suficient pasul 3 si 4.
 
 ---
 
+## Deploy (online): Netlify + Render
+
+Aplicatia se pune online in doua locuri: **frontend pe Netlify** (fisiere statice) si
+**backend + baza de date pe Render**. Fisierele de configurare sunt deja in repo:
+`render.yaml` (backend) si `netlify.toml` (frontend).
+
+```
+Vizitator  →  Netlify (frontend Angular)  →  /api/* ──proxy──►  Render (FastAPI + Postgres)
+```
+
+> **Important — ordinea conteaza:** deployeaza intai backend-ul (Render), ca sa-i afli
+> URL-ul, apoi pune URL-ul in `netlify.toml` si deployeaza frontend-ul.
+
+### Pas 1 — Backend pe Render
+
+1. Cont gratuit pe https://render.com (conecteaza-l cu GitHub).
+2. **New + → Blueprint →** alege repo-ul. Render citeste `render.yaml` si creeaza
+   automat serviciul web (`astra-backend`) + baza de date PostgreSQL (`astra-db`).
+3. `DATABASE_URL` si `JWT_SECRET` se completeaza singure; apasa **Apply** si asteapta
+   sa termine build-ul (cateva minute).
+4. Copiaza URL-ul serviciului, ceva de forma `https://astra-backend.onrender.com`.
+   Verifica-l in browser: `…/api/health` trebuie sa raspunda `{"status":"ok"}`.
+
+> Pe planul gratuit, backend-ul "adoarme" dupa ~15 min de inactivitate; prima cerere
+> dupa pauza dureaza ~30s pana porneste. E normal pentru tier-ul free.
+
+### Pas 2 — Frontend pe Netlify
+
+1. In `netlify.toml`, inlocuieste `https://YOUR-BACKEND.onrender.com` cu URL-ul real
+   de la pasul 1. Commit + push.
+2. Cont gratuit pe https://netlify.com (conecteaza-l cu GitHub).
+3. **Add new site → Import an existing project →** alege repo-ul. Netlify citeste
+   `netlify.toml` (build din `frontend/`, proxy `/api/*` spre Render) si publica site-ul.
+4. Primesti un URL gen `https://numele-tau.netlify.app`. Gata, e online! 🎉
+
+### Pas 3 — Leaga-le (CORS)
+
+In Render, la serviciul backend → **Environment**, pune `CORS_ORIGINS` = URL-ul tau de
+Netlify (ex. `https://numele-tau.netlify.app`) si salveaza. (Cu proxy-ul din `netlify.toml`
+de obicei nici nu e nevoie, dar e bine sa fie setat corect.)
+
+---
+
 ## Git — pe scurt
 
 ```bash
