@@ -28,5 +28,6 @@ export class Navbar {
   // Paginile din meniul "Discover".
   discoverPages = [
     { path: '/horoscope', label: 'Daily Horoscope', icon: '🔮' },
+    { path: '/ascendant-calculator', label: 'Ascendant Calculator', icon: '↑' },
   ];
 }

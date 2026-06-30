@@ -6,6 +6,7 @@ import { Child } from './pages/child/child';
 import { HumanDesign } from './pages/human-design/human-design';
 import { PricingPage } from './pages/pricing-page/pricing-page';
 import { Horoscope } from './pages/horoscope/horoscope';
+import { Ascendant } from './pages/ascendant/ascendant';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'ASTRA — Cosmic Map Calculator' },
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'human-design', component: HumanDesign, title: 'ASTRA — Human Design' },
   { path: 'pricing', component: PricingPage, title: 'ASTRA — Pricing' },
   { path: 'horoscope', component: Horoscope, title: 'ASTRA — Daily Horoscope' },
+  { path: 'ascendant-calculator', component: Ascendant, title: 'ASTRA — Ascendant Calculator' },
   { path: '**', redirectTo: '' },
 ];
