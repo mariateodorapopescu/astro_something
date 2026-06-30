@@ -1,26 +1,18 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
 
-import { ApiService } from './api.service';
+import { Navbar } from './sections/navbar/navbar';
+import { Hero } from './sections/hero/hero';
+import { HowItWorks } from './sections/how-it-works/how-it-works';
+import { Features } from './sections/features/features';
+import { Testimonials } from './sections/testimonials/testimonials';
+import { Pricing } from './sections/pricing/pricing';
+import { Faq } from './sections/faq/faq';
+import { Footer } from './sections/footer/footer';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [Navbar, Hero, HowItWorks, Features, Testimonials, Pricing, Faq, Footer],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
-export class App implements OnInit {
-  private api = inject(ApiService);
-
-  protected readonly title = signal('astro_something');
-  // Arata daca backend-ul raspunde. La inceput e "neconectat".
-  protected readonly backendStatus = signal('neconectat');
-
-  ngOnInit(): void {
-    // Incearca sa contacteze backend-ul. Daca nu ruleaza, ramane "neconectat".
-    this.api.health().subscribe({
-      next: (res) => this.backendStatus.set(res.status),
-      error: () => this.backendStatus.set('neconectat')
-    });
-  }
-}
+export class App {}

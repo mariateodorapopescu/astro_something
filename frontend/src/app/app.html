@@ -1,13 +1,14 @@
-<main class="page">
-  <section class="card">
-    <h1>{{ title() }} ✨</h1>
-    <p>Proiectul tau Angular ruleaza. De aici incepem designul.</p>
-
-    <div class="status">
-      Backend:
-      <strong [class.ok]="backendStatus() === 'ok'">{{ backendStatus() }}</strong>
-    </div>
-  </section>
-
-  <router-outlet />
-</main>
+<!-- Fundalul intregii pagini: gradient subtil, diferit pe light vs dark -->
+<div class="min-h-screen bg-gradient-to-b from-violet-50 via-white to-sky-50
+            text-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 dark:text-white">
+  <app-navbar />
+  <main>
+    <app-hero />
+    <app-how-it-works />
+    <app-features />
+    <app-testimonials />
+    <app-pricing />
+    <app-faq />
+  </main>
+  <app-footer />
+</div>

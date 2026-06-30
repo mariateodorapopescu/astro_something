@@ -1,0 +1,39 @@
+<footer class="border-t border-slate-200/70 bg-white/60 dark:border-white/10 dark:bg-slate-950/50">
+  <div class="mx-auto max-w-7xl px-4 py-14">
+    <div class="grid gap-10 md:grid-cols-4">
+      <!-- Brand -->
+      <div>
+        <a href="#" class="flex items-center gap-2">
+          <span class="grid h-9 w-9 place-items-center rounded-xl
+                       bg-gradient-to-br from-violet-600 to-pink-500 text-white">✦</span>
+          <span class="text-xl font-extrabold text-slate-900 dark:text-white">
+            ASTRA<span class="text-violet-500">.app</span>
+          </span>
+        </a>
+        <p class="mt-4 max-w-xs text-sm text-slate-500 dark:text-slate-400">
+          Discover what your birth date reveals — talents, purpose and life cycles.
+        </p>
+      </div>
+
+      <!-- Coloane de linkuri -->
+      @for (col of columns; track col.title) {
+        <div>
+          <h4 class="text-sm font-bold uppercase tracking-wide text-slate-900 dark:text-white">{{ col.title }}</h4>
+          <ul class="mt-4 space-y-2">
+            @for (link of col.links; track link) {
+              <li>
+                <a href="#" class="text-sm text-slate-500 hover:text-violet-600 dark:text-slate-400 dark:hover:text-violet-300">
+                  {{ link }}
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+
+    <div class="mt-12 border-t border-slate-200/70 pt-6 text-center text-sm text-slate-400 dark:border-white/10">
+      © 2026 ASTRA.app — Demo design built with Angular & Tailwind. All texts are placeholders.
+    </div>
+  </div>
+</footer>

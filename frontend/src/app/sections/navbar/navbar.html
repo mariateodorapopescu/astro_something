@@ -1,0 +1,59 @@
+<header class="sticky top-0 z-50 w-full px-4 py-3
+            backdrop-blur-md bg-white/70 dark:bg-slate-900/70
+            border-b border-slate-200/60 dark:border-white/10">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4">
+
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-2">
+      <span class="grid h-9 w-9 place-items-center rounded-xl
+                   bg-gradient-to-br from-violet-600 to-pink-500 text-white">✦</span>
+      <span class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+        ASTRA<span class="text-violet-500">.app</span>
+      </span>
+    </a>
+
+    <!-- Meniu central (pill) -->
+    <div class="hidden items-center gap-1 rounded-2xl border border-slate-200/70
+                bg-slate-100/60 p-1 dark:border-white/10 dark:bg-white/5 lg:flex">
+      <a href="#calculator" class="rounded-xl px-4 py-2 text-sm font-medium
+                  text-slate-700 hover:bg-white dark:text-slate-200 dark:hover:bg-white/10">
+        Calculate
+      </a>
+      <a href="#pricing" class="rounded-xl px-4 py-2 text-sm font-medium
+                  text-slate-700 hover:bg-white dark:text-slate-200 dark:hover:bg-white/10">
+        Pricing
+      </a>
+      <a href="#features" class="rounded-xl px-4 py-2 text-sm font-medium
+                  text-slate-700 hover:bg-white dark:text-slate-200 dark:hover:bg-white/10">
+        Discover
+      </a>
+    </div>
+
+    <!-- Actiuni dreapta -->
+    <div class="flex items-center gap-2">
+      <!-- Buton tema (soare / luna) -->
+      <button type="button" (click)="theme.toggle()"
+              [attr.aria-label]="theme.theme() === 'dark' ? 'Activeaza tema luminoasa' : 'Activeaza tema intunecata'"
+              class="grid h-10 w-10 place-items-center rounded-xl border
+                     border-slate-200 bg-white text-slate-700 hover:bg-slate-50
+                     dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10">
+        @if (theme.theme() === 'dark') {
+          <span class="text-lg">☀️</span>
+        } @else {
+          <span class="text-lg">🌙</span>
+        }
+      </button>
+
+      <a href="#" class="hidden px-3 py-2 text-sm font-medium
+                  text-slate-700 hover:text-violet-600 dark:text-slate-200 sm:block">
+        Log in
+      </a>
+
+      <a href="#calculator" class="rounded-xl bg-gradient-to-r from-violet-600 to-pink-500
+                  px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-500/25
+                  hover:opacity-90">
+        ✨ Get Started
+      </a>
+    </div>
+  </nav>
+</header>

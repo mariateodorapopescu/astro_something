@@ -1,0 +1,25 @@
+<section class="mx-auto max-w-4xl px-4 py-16 lg:py-20">
+  <h2 class="text-center text-4xl font-extrabold tracking-tight text-gradient sm:text-5xl">
+    Frequently asked questions
+  </h2>
+  <p class="mx-auto mt-4 max-w-2xl text-center text-lg text-slate-600 dark:text-slate-400">
+    Answers to the most important questions about the cosmic map and our free calculator.
+  </p>
+
+  <div class="mt-12 space-y-4">
+    @for (item of items; track item.q; let i = $index) {
+      <div class="overflow-hidden rounded-2xl border border-slate-200/70 bg-white/70
+                  dark:border-white/10 dark:bg-white/5">
+        <button type="button" (click)="toggle(i)"
+                class="flex w-full items-center justify-between gap-4 px-6 py-5 text-left">
+          <span class="font-semibold text-violet-600 dark:text-violet-300">{{ item.q }}</span>
+          <span class="text-slate-400 transition-transform duration-200"
+                [class.rotate-180]="openIndex() === i">⌄</span>
+        </button>
+        @if (openIndex() === i) {
+          <div class="px-6 pb-5 text-slate-600 dark:text-slate-400">{{ item.a }}</div>
+        }
+      </div>
+    }
+  </div>
+</section>
