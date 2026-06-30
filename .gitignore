@@ -1,0 +1,31 @@
+# ---------- Node / Angular ----------
+node_modules/
+frontend/.angular/
+frontend/dist/
+frontend/.angular/cache/
+*.log
+npm-debug.log*
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# ---------- Secrete / mediu ----------
+# NU urca niciodata fisiere .env reale in git (contin parole)
+.env
+*.env
+!*.env.example
+
+# ---------- Baza de date / Docker ----------
+postgres-data/
+
+# ---------- Editoare / OS ----------
+.DS_Store
+.idea/
+*.swp

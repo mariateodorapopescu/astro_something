@@ -1,0 +1,21 @@
+# Porneste o baza de date PostgreSQL cu o singura comanda:
+#   docker compose up -d
+# Si o opresti cu:
+#   docker compose down
+#
+# Datele se salveaza in folderul ./postgres-data (ignorat de git),
+# deci nu pierzi nimic cand opresti containerul.
+
+services:
+  db:
+    image: postgres:16
+    container_name: astro_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: app_password
+      POSTGRES_DB: app_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data

@@ -1,0 +1,56 @@
+<!-- HERO -->
+<section class="mx-auto max-w-5xl px-4 py-16 text-center lg:py-20">
+  <p class="text-sm text-slate-500 dark:text-slate-400">
+    <a routerLink="/" class="hover:text-violet-600">Home</a> / Daily Horoscope
+  </p>
+
+  <span class="mt-6 inline-flex items-center gap-2 rounded-full border border-amber-300/50
+               bg-amber-100/60 px-4 py-1.5 text-sm font-medium text-amber-700
+               dark:border-amber-400/20 dark:bg-amber-500/10 dark:text-amber-300">
+    🟡 Updated daily
+  </span>
+
+  <h1 class="mt-6 text-4xl font-extrabold tracking-tight sm:text-6xl">
+    <span class="bg-gradient-to-r from-amber-400 to-pink-500 bg-clip-text text-transparent">
+      Daily Horoscope
+    </span>
+    <span class="text-slate-900 dark:text-white"> — All Zodiac Signs</span>
+  </h1>
+
+  <p class="mx-auto mt-5 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
+    Choose your zodiac sign and discover what the stars have prepared for you today —
+    love, work, health and energy.
+  </p>
+</section>
+
+<!-- GRID ZODII -->
+<section class="mx-auto max-w-7xl px-4 pb-8">
+  <div class="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-6">
+    @for (s of signs; track s.name) {
+      <button type="button"
+              class="group rounded-3xl border border-slate-200/70 bg-white/70 p-6 text-center shadow-sm
+                     transition hover:-translate-y-1 hover:border-violet-400 hover:shadow-xl
+                     dark:border-white/10 dark:bg-white/5">
+        <span class="mx-auto grid h-14 w-14 place-items-center rounded-2xl
+                     bg-gradient-to-br from-violet-500 to-fuchsia-500 text-2xl text-white">{{ s.symbol }}</span>
+        <h3 class="mt-4 font-bold text-slate-900 dark:text-white">{{ s.name }}</h3>
+        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ s.range }}</p>
+        <p class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-emerald-500">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> Ready
+        </p>
+      </button>
+    }
+  </div>
+</section>
+
+<app-prose [title]="'What is a daily horoscope?'" [paragraphs]="whatIs" />
+
+<app-features
+  [title]="'Discover more on ASTRA'"
+  [subtitle]="'Other tools to explore your cosmic blueprint.'"
+  [cards]="discoverCards" />
+
+<app-faq
+  [title]="'Frequently asked questions'"
+  [subtitle]="'Answers about the daily horoscope.'"
+  [items]="faqItems" />

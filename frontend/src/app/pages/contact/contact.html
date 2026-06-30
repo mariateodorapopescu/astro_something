@@ -1,0 +1,88 @@
+<section class="mx-auto max-w-3xl px-4 py-16 lg:py-20">
+  <div class="text-center">
+    <span class="inline-flex items-center gap-2 rounded-full border border-violet-300/50
+                 bg-violet-100/60 px-4 py-1.5 text-sm font-medium text-violet-700
+                 dark:border-violet-400/20 dark:bg-violet-500/10 dark:text-violet-300">
+      ✉️ Support Center
+    </span>
+    <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
+      How can we help you?
+    </h1>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-slate-600 dark:text-slate-400">
+      Have a question, issue or suggestion? Write to us — we will respond as soon as possible.
+    </p>
+  </div>
+
+  <div class="mt-10 rounded-3xl border border-slate-200/70 bg-white/70 p-6 shadow-xl
+              dark:border-white/10 dark:bg-white/5 sm:p-10">
+    @if (sent()) {
+      <p class="rounded-xl bg-emerald-50 p-4 text-center font-medium text-emerald-700
+                dark:bg-emerald-500/10 dark:text-emerald-300">
+        🎉 Thanks! Your message has been sent.
+      </p>
+    } @else {
+      <form (ngSubmit)="send()" class="space-y-5">
+        <div class="grid gap-5 sm:grid-cols-2">
+          <label class="block">
+            <span class="mb-1 block text-sm font-medium text-slate-600 dark:text-slate-300">Your name *</span>
+            <input type="text" [(ngModel)]="name" name="name" placeholder="John Smith"
+                   class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900
+                          outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/30
+                          dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder-slate-500" />
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-sm font-medium text-slate-600 dark:text-slate-300">Your email *</span>
+            <input type="email" [(ngModel)]="email" name="email" placeholder="jan@email.com"
+                   class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900
+                          outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/30
+                          dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder-slate-500" />
+          </label>
+        </div>
+
+        <label class="block">
+          <span class="mb-1 block text-sm font-medium text-slate-600 dark:text-slate-300">Category</span>
+          <select [(ngModel)]="category" name="category"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900
+                         outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/30
+                         dark:border-white/10 dark:bg-white/5 dark:text-white">
+            <option value="">— Select category —</option>
+            @for (c of categories; track c) {
+              <option [value]="c">{{ c }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="block">
+          <span class="mb-1 block text-sm font-medium text-slate-600 dark:text-slate-300">Subject *</span>
+          <input type="text" [(ngModel)]="subject" name="subject" placeholder="Brief description of your question"
+                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900
+                        outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/30
+                        dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder-slate-500" />
+        </label>
+
+        <label class="block">
+          <span class="mb-1 block text-sm font-medium text-slate-600 dark:text-slate-300">Message *</span>
+          <textarea [(ngModel)]="message" name="message" rows="5" placeholder="Describe your question or issue in detail"
+                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900
+                           outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/30
+                           dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder-slate-500"></textarea>
+        </label>
+
+        <button type="submit"
+                class="w-full rounded-xl bg-gradient-to-r from-violet-600 to-pink-500 px-6 py-3.5
+                       font-bold text-white shadow-lg shadow-violet-500/30 hover:opacity-90">
+          Send message
+        </button>
+
+        @if (error()) {
+          <p class="text-center text-sm text-rose-600 dark:text-rose-300">{{ error() }}</p>
+        }
+      </form>
+    }
+  </div>
+</section>
+
+<app-faq
+  [title]="'Frequently asked questions'"
+  [subtitle]="'Quick answers about support and tickets.'"
+  [items]="faqItems" />

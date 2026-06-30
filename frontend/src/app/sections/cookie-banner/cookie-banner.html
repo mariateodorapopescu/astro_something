@@ -1,0 +1,50 @@
+@if (visible()) {
+  <div class="fixed inset-x-0 bottom-0 z-[90] px-4 pb-4">
+    <div class="mx-auto max-w-3xl rounded-3xl border border-slate-200/70 bg-white/95 p-6 shadow-2xl
+                backdrop-blur dark:border-white/10 dark:bg-slate-900/95">
+      <div class="flex items-start gap-3">
+        <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-violet-100 text-xl dark:bg-violet-500/15">🔒</span>
+        <div>
+          <h3 class="font-bold text-slate-900 dark:text-white">We respect your privacy</h3>
+          <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+            We use cookies to provide the best experience. Some are essential; others help us improve.
+          </p>
+        </div>
+      </div>
+
+      @if (expanded()) {
+        <div class="mt-4 space-y-3">
+          @for (c of categories; track c.key) {
+            <label class="flex items-start justify-between gap-4 rounded-2xl border border-slate-200/70 p-3
+                          dark:border-white/10">
+              <span>
+                <span class="font-semibold text-slate-900 dark:text-white">{{ c.label }}</span>
+                <span class="block text-xs text-slate-500 dark:text-slate-400">{{ c.text }}</span>
+              </span>
+              <input type="checkbox" [checked]="c.on()" (change)="c.on.set(!c.on())"
+                     class="mt-1 h-5 w-5 accent-violet-600" />
+            </label>
+          }
+        </div>
+      }
+
+      <div class="mt-5 flex flex-wrap gap-3">
+        <button type="button" (click)="acceptAll()"
+                class="rounded-xl bg-gradient-to-r from-violet-600 to-pink-500 px-5 py-2.5 text-sm
+                       font-semibold text-white hover:opacity-90">✓ Accept all</button>
+        @if (expanded()) {
+          <button type="button" (click)="savePreferences()"
+                  class="rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+            Save preferences</button>
+        } @else {
+          <button type="button" (click)="expanded.set(true)"
+                  class="rounded-xl border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-700
+                         hover:bg-slate-50 dark:border-white/15 dark:text-white dark:hover:bg-white/10">Customize</button>
+        }
+        <button type="button" (click)="onlyEssential()"
+                class="rounded-xl border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-700
+                       hover:bg-slate-50 dark:border-white/15 dark:text-white dark:hover:bg-white/10">Only essential</button>
+      </div>
+    </div>
+  </div>
+}

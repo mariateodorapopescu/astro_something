@@ -1,0 +1,110 @@
+<header class="sticky top-0 z-50 w-full px-4 py-3
+            backdrop-blur-md bg-white/70 dark:bg-slate-900/70
+            border-b border-slate-200/60 dark:border-white/10">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4">
+
+    <!-- Logo -->
+    <a routerLink="/" class="flex items-center gap-2">
+      <span class="grid h-9 w-9 place-items-center rounded-xl
+                   bg-gradient-to-br from-violet-600 to-pink-500 text-white">✦</span>
+      <span class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+        ASTRA<span class="text-violet-500">.app</span>
+      </span>
+    </a>
+
+    <!-- Meniu central (pill) -->
+    <div class="hidden items-center gap-1 rounded-2xl border border-slate-200/70
+                bg-slate-100/60 p-1 dark:border-white/10 dark:bg-white/5 lg:flex">
+
+      <!-- Dropdown "Calculate" -->
+      <div class="relative">
+        <button type="button" (click)="toggle('calc')"
+                class="flex items-center gap-1 rounded-xl px-4 py-2 text-sm font-medium
+                       text-slate-700 hover:bg-white dark:text-slate-200 dark:hover:bg-white/10">
+          💡 Calculate
+          <span class="transition-transform" [class.rotate-180]="menuOpen() === 'calc'">⌄</span>
+        </button>
+
+        @if (menuOpen() === 'calc') {
+          <div class="absolute left-0 top-full mt-2 w-56 rounded-2xl border border-slate-200/70
+                      bg-white p-2 shadow-xl dark:border-white/10 dark:bg-slate-900">
+            @for (page of calcPages; track page.path) {
+              <a [routerLink]="page.path" (click)="menuOpen.set(null)"
+                 class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium
+                        text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/10">
+                <span class="text-lg">{{ page.icon }}</span> {{ page.label }}
+              </a>
+            }
+          </div>
+        }
+      </div>
+
+      <a routerLink="/pricing" class="rounded-xl px-4 py-2 text-sm font-medium
+                  text-slate-700 hover:bg-white dark:text-slate-200 dark:hover:bg-white/10">
+        Pricing
+      </a>
+
+      <!-- Dropdown "Discover" -->
+      <div class="relative">
+        <button type="button" (click)="toggle('discover')"
+                class="flex items-center gap-1 rounded-xl px-4 py-2 text-sm font-medium
+                       text-slate-700 hover:bg-white dark:text-slate-200 dark:hover:bg-white/10">
+          🌐 Discover
+          <span class="transition-transform" [class.rotate-180]="menuOpen() === 'discover'">⌄</span>
+        </button>
+
+        @if (menuOpen() === 'discover') {
+          <div class="absolute left-0 top-full mt-2 w-56 rounded-2xl border border-slate-200/70
+                      bg-white p-2 shadow-xl dark:border-white/10 dark:bg-slate-900">
+            @for (page of discoverPages; track page.path) {
+              <a [routerLink]="page.path" (click)="menuOpen.set(null)"
+                 class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium
+                        text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/10">
+                <span class="text-lg">{{ page.icon }}</span> {{ page.label }}
+              </a>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Actiuni dreapta -->
+    <div class="flex items-center gap-2">
+      <button type="button" (click)="theme.toggle()"
+              [attr.aria-label]="theme.theme() === 'dark' ? 'Activeaza tema luminoasa' : 'Activeaza tema intunecata'"
+              class="grid h-10 w-10 place-items-center rounded-xl border
+                     border-slate-200 bg-white text-slate-700 hover:bg-slate-50
+                     dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10">
+        @if (theme.theme() === 'dark') {
+          <span class="text-lg">☀️</span>
+        } @else {
+          <span class="text-lg">🌙</span>
+        }
+      </button>
+
+      @if (auth.isLoggedIn()) {
+        <a routerLink="/account"
+           class="hidden text-sm font-medium text-slate-700 hover:text-violet-600
+                  dark:text-slate-200 dark:hover:text-violet-300 sm:block">
+          👋 {{ auth.user()?.name }}
+        </a>
+        <button type="button" (click)="auth.logout()"
+                class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold
+                       text-slate-700 hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/10">
+          Log out
+        </button>
+      } @else {
+        <a routerLink="/login" class="hidden px-3 py-2 text-sm font-medium
+                    text-slate-700 hover:text-violet-600 dark:text-slate-200 sm:block">
+          Log in
+        </a>
+
+        <a routerLink="/register" class="rounded-xl bg-gradient-to-r from-violet-600 to-pink-500
+                    px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-500/25
+                    hover:opacity-90">
+          ✨ Get Started
+        </a>
+      }
+    </div>
+  </nav>
+</header>

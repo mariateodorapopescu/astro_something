@@ -1,0 +1,116 @@
+<!-- HERO -->
+<section class="mx-auto max-w-5xl px-4 py-16 text-center lg:py-20">
+  <p class="text-sm text-slate-500 dark:text-slate-400">
+    <a routerLink="/" class="hover:text-violet-600">Home</a> / Blog
+  </p>
+
+  <h1 class="mt-6 text-5xl font-extrabold tracking-tight sm:text-6xl">
+    <span class="text-slate-900 dark:text-white">Blog </span>
+    <span class="text-gradient">ASTRA</span>
+  </h1>
+  <p class="mx-auto mt-5 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
+    Knowledge about numerology, Destiny Matrix and Human Design. Practical tips and inspiration.
+  </p>
+
+  <!-- Filtre categorii -->
+  <div class="mt-8 flex flex-wrap justify-center gap-2">
+    <button type="button" (click)="select(null)"
+            class="rounded-full px-4 py-2 text-sm font-medium transition"
+            [class]="selected() === null
+               ? 'bg-violet-600 text-white'
+               : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-white/5 dark:text-slate-300'">
+      All
+    </button>
+    @for (c of categories(); track c.name) {
+      <button type="button" (click)="select(c.name)"
+              class="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition"
+              [class]="selected() === c.name
+                 ? 'bg-violet-600 text-white'
+                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-white/5 dark:text-slate-300'">
+        {{ c.name }}
+        <span class="rounded-full bg-black/10 px-1.5 text-xs dark:bg-white/10">{{ c.count }}</span>
+      </button>
+    }
+  </div>
+</section>
+
+<!-- FEATURED -->
+@if (selected() === null) {
+  <section class="mx-auto max-w-7xl px-4 pb-8">
+    <h2 class="flex items-center gap-2 text-2xl font-extrabold text-slate-900 dark:text-white">
+      ⭐ Featured Articles
+    </h2>
+    <div class="mt-8 grid gap-6 md:grid-cols-3">
+      @for (a of featured(); track a.slug) {
+        <a [routerLink]="['/blog', a.slug]"
+           class="block overflow-hidden rounded-3xl border border-slate-200/70 bg-white/70 shadow-sm
+                  transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-white/5">
+          <div class="relative grid h-44 place-items-center bg-gradient-to-br text-5xl {{ a.gradient }}">
+            {{ a.emoji }}
+            <span class="absolute left-3 top-3 rounded-full bg-amber-400 px-3 py-1 text-xs font-bold text-white">
+              ★ Featured
+            </span>
+          </div>
+          <div class="p-6">
+            <p class="text-xs font-bold uppercase tracking-wide text-violet-600 dark:text-violet-300">{{ a.category }}</p>
+            <h3 class="mt-2 text-lg font-bold text-slate-900 dark:text-white">{{ a.title }}</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">{{ a.excerpt }}</p>
+            <div class="mt-5 flex items-center justify-between text-xs text-slate-400">
+              <span>🕐 {{ a.readMin }} min</span>
+              <span>{{ a.date }}</span>
+            </div>
+          </div>
+        </a>
+      }
+    </div>
+  </section>
+}
+
+<!-- LATEST / FILTERED -->
+<section class="mx-auto max-w-7xl px-4 py-8 pb-16">
+  <h2 class="flex items-center gap-2 text-2xl font-extrabold text-slate-900 dark:text-white">
+    📰 {{ selected() ? selected() : 'Latest Articles' }}
+  </h2>
+  <div class="mt-8 grid gap-6 md:grid-cols-3">
+    @for (a of latest(); track a.slug) {
+      <a [routerLink]="['/blog', a.slug]"
+         class="block overflow-hidden rounded-3xl border border-slate-200/70 bg-white/70 shadow-sm
+                transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-white/5">
+        <div class="grid h-44 place-items-center bg-gradient-to-br text-5xl {{ a.gradient }}">{{ a.emoji }}</div>
+        <div class="p-6">
+          <p class="text-xs font-bold uppercase tracking-wide text-violet-600 dark:text-violet-300">{{ a.category }}</p>
+          <h3 class="mt-2 text-lg font-bold text-slate-900 dark:text-white">{{ a.title }}</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">{{ a.excerpt }}</p>
+          <div class="mt-5 flex items-center justify-between text-xs text-slate-400">
+            <span>🕐 {{ a.readMin }} min</span>
+            <span>{{ a.date }}</span>
+          </div>
+        </div>
+      </a>
+    }
+  </div>
+
+  <!-- Paginare -->
+  <div class="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+    <p class="text-sm text-slate-500 dark:text-slate-400">
+      Showing {{ rangeStart() }} to {{ rangeEnd() }} of {{ total() }} results
+    </p>
+    <div class="flex items-center gap-1">
+      <button type="button" (click)="setPage(page() - 1)" [disabled]="page() === 1"
+              class="grid h-9 w-9 place-items-center rounded-lg border border-slate-200 text-slate-600
+                     disabled:opacity-40 hover:bg-slate-100 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/10">‹</button>
+      @for (p of pages(); track p) {
+        <button type="button" (click)="setPage(p)"
+                class="grid h-9 w-9 place-items-center rounded-lg border text-sm font-semibold"
+                [class]="page() === p
+                   ? 'border-violet-500 bg-violet-600 text-white'
+                   : 'border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/10'">
+          {{ p }}
+        </button>
+      }
+      <button type="button" (click)="setPage(page() + 1)" [disabled]="page() === totalPages()"
+              class="grid h-9 w-9 place-items-center rounded-lg border border-slate-200 text-slate-600
+                     disabled:opacity-40 hover:bg-slate-100 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/10">›</button>
+    </div>
+  </div>
+</section>
