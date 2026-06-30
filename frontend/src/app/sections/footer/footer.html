@@ -1,6 +1,6 @@
 <footer class="border-t border-slate-200/70 bg-white/60 dark:border-white/10 dark:bg-slate-950/50">
   <div class="mx-auto max-w-7xl px-4 py-14">
-    <div class="grid gap-10 md:grid-cols-4">
+    <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
       <!-- Brand -->
       <div>
         <a href="#" class="flex items-center gap-2">
@@ -11,7 +11,7 @@
           </span>
         </a>
         <p class="mt-4 max-w-xs text-sm text-slate-500 dark:text-slate-400">
-          Discover what your birth date reveals — talents, purpose and life cycles.
+          Discover your cosmic map and unlock the secrets of your potential through your birth date.
         </p>
       </div>
 
@@ -32,8 +32,16 @@
       }
     </div>
 
-    <div class="mt-12 border-t border-slate-200/70 pt-6 text-center text-sm text-slate-400 dark:border-white/10">
-      © 2026 ASTRA.app — Demo design built with Angular & Tailwind. All texts are placeholders.
+    <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-200/70 pt-6
+                dark:border-white/10 sm:flex-row">
+      <p class="text-sm text-slate-400">© 2026 ASTRA.app — Demo design. All texts are placeholders.</p>
+      <div class="flex gap-3">
+        @for (s of socials; track s.label) {
+          <a href="#" [attr.aria-label]="s.label"
+             class="grid h-9 w-9 place-items-center rounded-full border border-slate-200 text-lg
+                    hover:bg-slate-100 dark:border-white/10 dark:hover:bg-white/10">{{ s.icon }}</a>
+        }
+      </div>
     </div>
   </div>
 </footer>

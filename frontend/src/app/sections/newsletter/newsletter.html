@@ -1,0 +1,35 @@
+<section class="mx-auto max-w-3xl px-4 py-12">
+  <div class="rounded-3xl bg-gradient-to-br from-violet-200/70 to-pink-200/70 p-8 text-center
+              dark:from-violet-500/15 dark:to-pink-500/15 sm:p-10">
+    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Subscribe to the newsletter</h2>
+    <p class="mx-auto mt-2 max-w-md text-slate-600 dark:text-slate-300">
+      Get weekly numerology tips, cosmic map insights and exclusive content.
+    </p>
+
+    @if (subscribed()) {
+      <p class="mt-6 rounded-xl bg-white/70 p-4 font-medium text-violet-700 dark:bg-white/10 dark:text-violet-200">
+        🎉 Thanks for subscribing!
+      </p>
+    } @else {
+      <form (ngSubmit)="subscribe()" class="mx-auto mt-6 max-w-lg space-y-4 text-left">
+        <input type="email" [(ngModel)]="email" name="email" placeholder="Your email address"
+               class="w-full rounded-xl border border-white/40 bg-white px-4 py-3 text-slate-900
+                      outline-none focus:ring-2 focus:ring-violet-500/40
+                      dark:border-white/10 dark:bg-white/10 dark:text-white dark:placeholder-slate-400" />
+
+        <label class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-300">
+          <input type="checkbox" [(ngModel)]="agreed" name="agreed" class="mt-1 h-4 w-4 accent-violet-600" />
+          <span>I agree to receive personal development materials by email. I can withdraw my consent at any time.</span>
+        </label>
+
+        <button type="submit"
+                class="w-full rounded-xl bg-gradient-to-r from-violet-600 to-pink-500 px-6 py-3.5
+                       font-bold text-white shadow-lg shadow-violet-500/30 hover:opacity-90
+                       disabled:opacity-50"
+                [disabled]="!email() || !agreed()">
+          Subscribe for free
+        </button>
+      </form>
+    }
+  </div>
+</section>

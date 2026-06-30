@@ -6,8 +6,14 @@ import { Component } from '@angular/core';
 })
 export class Footer {
   columns = [
-    { title: 'Product', links: ['Calculate', 'Pricing', 'Discover', 'Log in'] },
-    { title: 'Company', links: ['About', 'Method', 'Blog', 'Contact'] },
-    { title: 'Legal', links: ['Privacy Policy', 'Terms', 'Cookie Policy', 'GDPR'] },
+    { title: 'Products', links: ['Individual Map', 'Partnership Map', 'Child Map', 'Human Design', 'Blog', 'Pricing'] },
+    { title: 'Information', links: ['About Us', 'Privacy Policy', 'Cookie Policy', 'Terms of Service', 'Help Center', 'Contact'] },
+    { title: 'Account', links: ['Log in', 'Create Account'] },
+  ];
+
+  socials = [
+    { label: 'Facebook', icon: '📘' },
+    { label: 'Instagram', icon: '📷' },
+    { label: 'TikTok', icon: '🎵' },
   ];
 }
