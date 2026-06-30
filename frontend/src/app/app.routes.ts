@@ -8,6 +8,7 @@ import { PricingPage } from './pages/pricing-page/pricing-page';
 import { Horoscope } from './pages/horoscope/horoscope';
 import { Ascendant } from './pages/ascendant/ascendant';
 import { Blog } from './pages/blog/blog';
+import { BlogArticle } from './pages/blog/blog-article';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'ASTRA — Cosmic Map Calculator' },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'horoscope', component: Horoscope, title: 'ASTRA — Daily Horoscope' },
   { path: 'ascendant-calculator', component: Ascendant, title: 'ASTRA — Ascendant Calculator' },
   { path: 'blog', component: Blog, title: 'ASTRA — Blog' },
+  { path: 'blog/:slug', component: BlogArticle, title: 'ASTRA — Article' },
   { path: '**', redirectTo: '' },
 ];
