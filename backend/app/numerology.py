@@ -54,6 +54,38 @@ MEANINGS = {
 }
 
 
+def compatibility(name1: str, d1: date, name2: str, d2: date) -> dict:
+    """Compatibilitatea a doua persoane pe baza cailor vietii lor."""
+    lp1 = life_path(d1)
+    lp2 = life_path(d2)
+
+    # Scor determinist: cu cat caile vietii sunt mai apropiate, cu atat mai mare.
+    diff = abs(lp1 - lp2)
+    score = max(40, round(100 - diff * 7))
+    if lp1 == lp2:
+        score = 96
+
+    if score >= 85:
+        label = "Compatibilitate excelenta"
+    elif score >= 70:
+        label = "Compatibilitate buna"
+    elif score >= 55:
+        label = "Compatibilitate echilibrata"
+    else:
+        label = "Compatibilitate provocatoare"
+
+    return {
+        "life_path1": lp1,
+        "life_path2": lp2,
+        "score": score,
+        "label": label,
+        "summary": (
+            f"{name1} (calea vietii {lp1}) si {name2} (calea vietii {lp2}): "
+            f"{label.lower()} — scor {score}/100."
+        ),
+    }
+
+
 def calculate(name: str, birth_date: date) -> dict:
     """Calculul complet returnat clientului."""
     lp = life_path(birth_date)

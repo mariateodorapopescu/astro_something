@@ -16,3 +16,14 @@ class Calculation(Base):
     life_path = Column(Integer, nullable=False)
     expression = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class Partnership(Base):
+    """Un calcul de compatibilitate intre doua persoane."""
+    __tablename__ = "partnerships"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name1 = Column(String, nullable=False)
+    name2 = Column(String, nullable=False)
+    score = Column(Integer, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)

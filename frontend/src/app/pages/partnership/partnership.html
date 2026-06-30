@@ -67,19 +67,40 @@
           </div>
         </div>
 
-        <button type="submit"
+        <button type="submit" [disabled]="loading()"
                 class="mx-auto mt-8 flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 to-violet-600
-                       px-8 py-4 text-lg font-bold text-white shadow-lg shadow-pink-500/30 hover:opacity-90">
-          ❤️ Calculate Compatibility for free
+                       px-8 py-4 text-lg font-bold text-white shadow-lg shadow-pink-500/30 hover:opacity-90
+                       disabled:opacity-60">
+          {{ loading() ? '⏳ Calculating…' : '❤️ Calculate Compatibility for free' }}
         </button>
         <p class="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
           * You will receive a free compatibility analysis — Partnership Matrix.
         </p>
       </form>
 
-      @if (result()) {
-        <p class="mt-4 rounded-xl bg-violet-50 p-3 text-center text-sm text-violet-800
-                  dark:bg-violet-500/10 dark:text-violet-200">{{ result() }}</p>
+      @if (error()) {
+        <p class="mt-4 rounded-xl bg-rose-50 p-3 text-center text-sm text-rose-700
+                  dark:bg-rose-500/10 dark:text-rose-300">{{ error() }}</p>
+      }
+
+      @if (result(); as r) {
+        <div class="mt-6 rounded-2xl border border-pink-200/60 bg-pink-50/60 p-6 text-center
+                    dark:border-pink-400/15 dark:bg-pink-500/10">
+          <div class="text-5xl font-extrabold text-gradient">{{ r.score }}<span class="text-2xl">/100</span></div>
+          <p class="mt-1 font-semibold text-slate-900 dark:text-white">{{ r.label }}</p>
+          <div class="mt-4 flex items-center justify-center gap-8">
+            <div>
+              <div class="text-2xl font-extrabold text-violet-600 dark:text-violet-300">{{ r.life_path1 }}</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400">{{ name1() }}</div>
+            </div>
+            <span class="text-2xl">💞</span>
+            <div>
+              <div class="text-2xl font-extrabold text-violet-600 dark:text-violet-300">{{ r.life_path2 }}</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400">{{ name2() }}</div>
+            </div>
+          </div>
+          <p class="mt-4 text-sm text-slate-600 dark:text-slate-300">{{ r.summary }}</p>
+        </div>
       }
     </div>
   </div>

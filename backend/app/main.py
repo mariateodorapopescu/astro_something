@@ -10,8 +10,14 @@ from sqlalchemy.orm import Session
 from . import numerology
 from .config import settings
 from .database import Base, engine, get_db
-from .models import Calculation
-from .schemas import CalculateRequest, CalculateResponse, CalculationItem
+from .models import Calculation, Partnership
+from .schemas import (
+    CalculateRequest,
+    CalculateResponse,
+    CalculationItem,
+    PartnershipRequest,
+    PartnershipResponse,
+)
 
 # Creeaza automat tabelele in baza de date (daca nu exista deja).
 Base.metadata.create_all(bind=engine)
@@ -50,6 +56,20 @@ def calculate(req: CalculateRequest, db: Session = Depends(get_db)):
     db.commit()
 
     return {"name": req.name, "birth_date": req.birth_date, **result}
+
+
+@app.post("/api/calculate-partnership", response_model=PartnershipResponse)
+def calculate_partnership(req: PartnershipRequest, db: Session = Depends(get_db)):
+    """Calculeaza compatibilitatea a doua persoane, o salveaza si o returneaza."""
+    result = numerology.compatibility(
+        req.name1, req.birth_date1, req.name2, req.birth_date2
+    )
+
+    row = Partnership(name1=req.name1, name2=req.name2, score=result["score"])
+    db.add(row)
+    db.commit()
+
+    return result
 
 
 @app.get("/api/calculations", response_model=list[CalculationItem])

@@ -22,6 +22,22 @@ class CalculateResponse(BaseModel):
     summary: str
 
 
+class PartnershipRequest(BaseModel):
+    """Datele celor doua persoane pentru compatibilitate."""
+    name1: str
+    birth_date1: date
+    name2: str
+    birth_date2: date
+
+
+class PartnershipResponse(BaseModel):
+    life_path1: int
+    life_path2: int
+    score: int
+    label: str
+    summary: str
+
+
 class CalculationItem(BaseModel):
     """Un calcul salvat (pentru lista cu cele recente)."""
     id: int

@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
+import { ApiService, CalculateResult } from '../../api.service';
 import { Prose } from '../../sections/prose/prose';
 import { HowItWorks, Step } from '../../sections/how-it-works/how-it-works';
 import { Features, FeatureCard } from '../../sections/features/features';
@@ -13,17 +14,30 @@ import { Faq, FaqItem } from '../../sections/faq/faq';
   templateUrl: './child.html',
 })
 export class Child {
+  private api = inject(ApiService);
+
   name = signal('');
   birthDate = signal('');
-  result = signal<string | null>(null);
+
+  loading = signal(false);
+  error = signal<string | null>(null);
+  result = signal<CalculateResult | null>(null);
 
   calculate(): void {
+    this.error.set(null);
+    this.result.set(null);
     if (!this.name() || !this.birthDate()) {
-      this.result.set('Completeaza numele si data nasterii copilului.');
+      this.error.set('Completeaza numele si data nasterii copilului.');
       return;
     }
-    // TODO: apel catre backend pentru calculul real.
-    this.result.set(`Harta copilului ${this.name()} se calculeaza...`);
+    this.loading.set(true);
+    this.api.calculate(this.name(), this.birthDate()).subscribe({
+      next: (res) => { this.result.set(res); this.loading.set(false); },
+      error: () => {
+        this.error.set('Nu pot contacta backend-ul. Pornește serverul Python (uvicorn).');
+        this.loading.set(false);
+      },
+    });
   }
 
   whatIs = [
