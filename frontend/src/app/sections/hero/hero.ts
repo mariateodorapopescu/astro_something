@@ -1,5 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+import { ApiService, CalculateResult } from '../../api.service';
 
 @Component({
   selector: 'app-hero',
@@ -7,6 +9,8 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './hero.html',
 })
 export class Hero {
+  private api = inject(ApiService);
+
   // Lista de beneficii afisata sub descriere.
   benefits = [
     { icon: '✅', label: 'Instant access' },
@@ -19,15 +23,31 @@ export class Hero {
   name = signal('');
   birthDate = signal('');
 
-  // Mesajul afisat dupa apasarea butonului (deocamdata local, fara backend).
-  result = signal<string | null>(null);
+  // Starea calculului.
+  loading = signal(false);
+  error = signal<string | null>(null);
+  result = signal<CalculateResult | null>(null);
 
   calculate(): void {
+    this.error.set(null);
+    this.result.set(null);
+
     if (!this.name() || !this.birthDate()) {
-      this.result.set('Completeaza numele si data nasterii.');
+      this.error.set('Completeaza numele si data nasterii.');
       return;
     }
-    // TODO: aici vom apela backend-ul (/api/...) ca sa calculam matricea reala.
-    this.result.set(`Salut, ${this.name()}! Harta ta se calculeaza pe baza datei ${this.birthDate()}.`);
+
+    this.loading.set(true);
+    this.api.calculate(this.name(), this.birthDate()).subscribe({
+      next: (res) => {
+        this.result.set(res);
+        this.loading.set(false);
+      },
+      error: () => {
+        // Daca backend-ul nu ruleaza, aratam un mesaj prietenos.
+        this.error.set('Nu pot contacta backend-ul. Pornește serverul Python (uvicorn) și încearcă din nou.');
+        this.loading.set(false);
+      },
+    });
   }
 }

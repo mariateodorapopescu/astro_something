@@ -3,15 +3,17 @@
 Porneste serverul cu:  uvicorn app.main:app --reload
 Documentatia automata a API-ului:  http://localhost:8000/docs
 """
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 
+from . import numerology
 from .config import settings
-from .database import Base, engine
+from .database import Base, engine, get_db
+from .models import Calculation
+from .schemas import CalculateRequest, CalculateResponse, CalculationItem
 
 # Creeaza automat tabelele in baza de date (daca nu exista deja).
-# Pentru proiecte mai serioase se folosesc "migrari" (ex: Alembic),
-# dar pentru inceput asta e suficient.
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="astro_something API")
@@ -30,3 +32,32 @@ app.add_middleware(
 def health():
     """Endpoint simplu ca sa verifici ca backend-ul traieste."""
     return {"status": "ok"}
+
+
+@app.post("/api/calculate", response_model=CalculateResponse)
+def calculate(req: CalculateRequest, db: Session = Depends(get_db)):
+    """Calculeaza numerele din data nasterii, le salveaza si le returneaza."""
+    result = numerology.calculate(req.name, req.birth_date)
+
+    # Salveaza in baza de date.
+    row = Calculation(
+        name=req.name,
+        birth_date=req.birth_date,
+        life_path=result["life_path"],
+        expression=result["expression"],
+    )
+    db.add(row)
+    db.commit()
+
+    return {"name": req.name, "birth_date": req.birth_date, **result}
+
+
+@app.get("/api/calculations", response_model=list[CalculationItem])
+def list_calculations(db: Session = Depends(get_db)):
+    """Ultimele 10 calcule salvate (cele mai noi primele)."""
+    return (
+        db.query(Calculation)
+        .order_by(Calculation.created_at.desc())
+        .limit(10)
+        .all()
+    )

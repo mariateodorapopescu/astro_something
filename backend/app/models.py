@@ -1,16 +1,18 @@
-"""Modelele = tabelele din baza de date, descrise in Python.
+"""Modelele = tabelele din baza de date, descrise in Python (SQLAlchemy)."""
+from datetime import datetime
 
-Acesta e doar un exemplu ("Item") ca sa ai un punct de plecare.
-Il poti sterge sau modifica dupa cum ai nevoie.
-"""
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Date, DateTime, Integer, String
 
 from .database import Base
 
 
-class Item(Base):
-    __tablename__ = "items"
+class Calculation(Base):
+    """Un calcul salvat: cine, ce data, ce numere au iesit."""
+    __tablename__ = "calculations"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    description = Column(String, nullable=True)
+    birth_date = Column(Date, nullable=False)
+    life_path = Column(Integer, nullable=False)
+    expression = Column(Integer, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)

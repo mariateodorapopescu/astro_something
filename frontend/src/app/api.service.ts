@@ -2,14 +2,21 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+/** Forma raspunsului de la /api/calculate. */
+export interface CalculateResult {
+  name: string;
+  birth_date: string;
+  life_path: number;
+  life_path_meaning: string;
+  expression: number;
+  expression_meaning: string;
+  day_energy: number;
+  summary: string;
+}
+
 /**
- * Serviciu de exemplu pentru a vorbi cu backend-ul.
- * Cererile catre "/api/..." sunt redirectate automat spre backend
- * (vezi frontend/proxy.conf.json).
- *
- * Folosire intr-o componenta:
- *   private api = inject(ApiService);
- *   this.api.health().subscribe(res => console.log(res));
+ * Serviciu pentru a vorbi cu backend-ul Python.
+ * Cererile catre "/api/..." sunt redirectate spre backend (vezi proxy.conf.json).
  */
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -17,5 +24,13 @@ export class ApiService {
 
   health(): Observable<{ status: string }> {
     return this.http.get<{ status: string }>('/api/health');
+  }
+
+  /** Trimite numele + data nasterii si primeste calculul numerologic. */
+  calculate(name: string, birthDate: string): Observable<CalculateResult> {
+    return this.http.post<CalculateResult>('/api/calculate', {
+      name,
+      birth_date: birthDate,
+    });
   }
 }
