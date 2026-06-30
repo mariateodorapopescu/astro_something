@@ -1,7 +1,9 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 
 import { AuthService, AuthUser } from '../../auth.service';
+import { ApiService, CalculationItem } from '../../api.service';
 
 /**
  * Pagina de cont. La initializare cere /api/me (ruta protejata) ca sa
@@ -11,16 +13,21 @@ import { AuthService, AuthUser } from '../../auth.service';
  */
 @Component({
   selector: 'app-account',
-  imports: [],
+  imports: [RouterLink, DatePipe],
   templateUrl: './account.html',
 })
 export class Account implements OnInit {
   private auth = inject(AuthService);
+  private api = inject(ApiService);
   private router = inject(Router);
 
   user = signal<AuthUser | null>(this.auth.user());
   loading = signal(true);
   error = signal<string | null>(null);
+
+  // Istoricul de calcule al userului.
+  history = signal<CalculationItem[]>([]);
+  historyLoading = signal(true);
 
   ngOnInit(): void {
     this.auth.me().subscribe({
@@ -37,6 +44,14 @@ export class Account implements OnInit {
         this.error.set('Nu pot incarca datele contului.');
         this.loading.set(false);
       },
+    });
+
+    this.api.myCalculations().subscribe({
+      next: (items) => {
+        this.history.set(items);
+        this.historyLoading.set(false);
+      },
+      error: () => this.historyLoading.set(false),
     });
   }
 

@@ -192,6 +192,8 @@ Register/Login  →  backend verifica  →  intoarce token + user  →  AuthServ
        →  navbar arata "👋 Nume"  →  /account cheama /api/me  →  afiseaza datele de pe server
 ```
 
+**Istoric de calcule:** cand esti logat, fiecare calcul de pe pagina principala se leaga de contul tau (`Calculation.user_id`) si apare in tabelul de pe `/account` (`GET /api/my-calculations`). Calculele facute fara cont raman anonime (`user_id = NULL`).
+
 **De facut inainte de productie:** schimba `jwt_secret` din `backend/app/config.py` (ideal printr-o variabila de mediu in `.env`) cu un secret lung si aleatoriu. Valoarea actuala e doar pentru development.
 
 ---
@@ -225,7 +227,8 @@ Register/Login  →  backend verifica  →  intoarce token + user  →  AuthServ
 | `POST` | `/api/register` | cont nou (201; 409 daca emailul exista deja) |
 | `POST` | `/api/login` | autentificare (401 la date gresite) |
 | `GET` | `/api/me` | datele userului curent (**cere token**) |
-| `POST` | `/api/calculate` | calcul individual |
+| `GET` | `/api/my-calculations` | istoricul de calcule al userului (**cere token**) |
+| `POST` | `/api/calculate` | calcul individual (se leaga de cont daca esti logat) |
 | `POST` | `/api/calculate-partnership` | compatibilitate cuplu |
 | `POST` | `/api/human-design` | Human Design |
 | `POST` | `/api/ascendant` | ascendent |

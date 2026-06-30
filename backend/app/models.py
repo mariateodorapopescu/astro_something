@@ -1,7 +1,7 @@
 """Modelele = tabelele din baza de date, descrise in Python (SQLAlchemy)."""
 from datetime import datetime
 
-from sqlalchemy import Column, Date, DateTime, Integer, String
+from sqlalchemy import Column, Date, DateTime, ForeignKey, Integer, String
 
 from .database import Base
 
@@ -22,6 +22,9 @@ class Calculation(Base):
     __tablename__ = "calculations"
 
     id = Column(Integer, primary_key=True, index=True)
+    # Legatura optionala catre cont: completat doar daca userul era logat.
+    # Calculele anonime (de pe pagina publica) raman cu user_id = NULL.
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     name = Column(String, nullable=False)
     birth_date = Column(Date, nullable=False)
     life_path = Column(Integer, nullable=False)

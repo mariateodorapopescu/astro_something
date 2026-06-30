@@ -1,5 +1,6 @@
 """Functii de securitate: hash-uire parole (bcrypt) si token-uri JWT."""
 from datetime import datetime, timedelta, timezone
+from typing import Optional
 
 import bcrypt
 import jwt
@@ -58,3 +59,24 @@ def get_current_user(
     if user is None:
         raise creds_error
     return user
+
+
+def get_optional_user(
+    authorization: str = Header(default=""),
+    db: Session = Depends(get_db),
+) -> Optional[User]:
+    """Ca get_current_user, dar NU blocheaza daca lipseste token-ul.
+
+    Returneaza userul daca e logat (token valid), altfel None. Util pentru
+    rute publice care vor sa lege rezultatul de cont CAND userul e autentificat
+    (ex. salvarea unui calcul in istoricul lui).
+    """
+    if not authorization.startswith("Bearer "):
+        return None
+    token = authorization.split(" ", 1)[1]
+    try:
+        payload = jwt.decode(token, settings.jwt_secret, algorithms=["HS256"])
+        user_id = int(payload["sub"])
+    except (jwt.PyJWTError, KeyError, ValueError):
+        return None
+    return db.get(User, user_id)

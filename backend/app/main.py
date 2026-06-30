@@ -8,7 +8,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from . import numerology
-from .auth import create_token, get_current_user, hash_password, verify_password
+from .auth import (
+    create_token,
+    get_current_user,
+    get_optional_user,
+    hash_password,
+    verify_password,
+)
 from .config import settings
 from .database import Base, engine, get_db
 from .models import (
@@ -98,12 +104,21 @@ def me(current_user: User = Depends(get_current_user)):
 
 
 @app.post("/api/calculate", response_model=CalculateResponse)
-def calculate(req: CalculateRequest, db: Session = Depends(get_db)):
-    """Calculeaza numerele din data nasterii, le salveaza si le returneaza."""
+def calculate(
+    req: CalculateRequest,
+    db: Session = Depends(get_db),
+    current_user: User | None = Depends(get_optional_user),
+):
+    """Calculeaza numerele din data nasterii, le salveaza si le returneaza.
+
+    Daca userul e logat, calculul se leaga de contul lui (apare in istoric).
+    Pentru vizitatori anonimi se salveaza tot, dar fara user.
+    """
     result = numerology.calculate(req.name, req.birth_date)
 
     # Salveaza in baza de date.
     row = Calculation(
+        user_id=current_user.id if current_user else None,
         name=req.name,
         birth_date=req.birth_date,
         life_path=result["life_path"],
@@ -174,5 +189,20 @@ def list_calculations(db: Session = Depends(get_db)):
         db.query(Calculation)
         .order_by(Calculation.created_at.desc())
         .limit(10)
+        .all()
+    )
+
+
+@app.get("/api/my-calculations", response_model=list[CalculationItem])
+def my_calculations(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Istoricul de calcule al userului logat (cele mai noi primele)."""
+    return (
+        db.query(Calculation)
+        .filter(Calculation.user_id == current_user.id)
+        .order_by(Calculation.created_at.desc())
+        .limit(50)
         .all()
     )

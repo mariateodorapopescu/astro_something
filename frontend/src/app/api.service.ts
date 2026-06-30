@@ -41,6 +41,16 @@ export interface OkResult {
   message: string;
 }
 
+/** Un calcul salvat, asa cum vine din istoric (/api/my-calculations). */
+export interface CalculationItem {
+  id: number;
+  name: string;
+  birth_date: string;
+  life_path: number;
+  expression: number;
+  created_at: string;
+}
+
 /**
  * Serviciu pentru a vorbi cu backend-ul Python.
  * Cererile catre "/api/..." sunt redirectate spre backend (vezi proxy.conf.json).
@@ -92,5 +102,10 @@ export class ApiService {
   /** Trimite un mesaj de contact. */
   contact(data: { name: string; email: string; subject: string; message: string; category: string }): Observable<OkResult> {
     return this.http.post<OkResult>('/api/contact', data);
+  }
+
+  /** Istoricul de calcule al userului logat (token atasat de interceptor). */
+  myCalculations(): Observable<CalculationItem[]> {
+    return this.http.get<CalculationItem[]>('/api/my-calculations');
   }
 }
