@@ -10,14 +10,23 @@ import { ThemeService } from '../../theme.service';
 export class Navbar {
   protected theme = inject(ThemeService);
 
-  // Controleaza meniul "Calculate" (deschis / inchis).
-  menuOpen = signal(false);
+  // Controleaza meniurile derulante (care e deschis).
+  menuOpen = signal<'calc' | 'discover' | null>(null);
 
-  // Paginile de calcul, afisate in meniul derulant.
+  toggle(menu: 'calc' | 'discover'): void {
+    this.menuOpen.set(this.menuOpen() === menu ? null : menu);
+  }
+
+  // Paginile de calcul, afisate in meniul "Calculate".
   calcPages = [
     { path: '/', label: 'Individual Matrix', icon: '👤' },
     { path: '/partnership-matrix', label: 'Partnership Matrix', icon: '💞' },
     { path: '/child-matrix', label: 'Child Matrix', icon: '🧒' },
     { path: '/human-design', label: 'Human Design', icon: '🧬' },
+  ];
+
+  // Paginile din meniul "Discover".
+  discoverPages = [
+    { path: '/horoscope', label: 'Daily Horoscope', icon: '🔮' },
   ];
 }

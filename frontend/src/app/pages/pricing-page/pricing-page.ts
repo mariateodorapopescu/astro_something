@@ -114,6 +114,34 @@ export class PricingPage {
       features: ['Single matrix section', 'Instant online access'], cta: 'Buy Now' },
   ];
 
+  // "Is this for you?" — doua coloane.
+  forYou = [
+    'You feel stuck and wonder why certain patterns repeat',
+    'You want to understand your natural talents and life purpose',
+    'You are curious about the deeper meaning behind your birth date',
+    'You value self-knowledge and personal growth',
+    'You want practical insights, not vague predictions',
+  ];
+  notForYou = [
+    'You expect magic solutions without any self-reflection',
+    'You are not open to exploring your inner patterns',
+    'You want a quick horoscope, not a deep analysis',
+  ];
+
+  // "Why choose us?" — carduri.
+  whyCards: FeatureCard[] = [
+    { icon: '⚡', title: 'Instant delivery', gradient: 'from-violet-500 to-indigo-500',
+      text: 'PDF reports ready in minutes. E-books available immediately after purchase.' },
+    { icon: '🛡️', title: 'Secure payment', gradient: 'from-teal-400 to-emerald-500',
+      text: 'We support Stripe and major payment processors. Your data is fully protected.' },
+    { icon: '🎧', title: 'Support', gradient: 'from-rose-400 to-pink-500',
+      text: 'Have questions? Our team will answer every question.' },
+    { icon: '♾️', title: 'Lifetime access', gradient: 'from-amber-400 to-orange-500',
+      text: 'Purchased reports and e-books are yours — no time limits.' },
+    { icon: '✅', title: 'Delivery guarantee', gradient: 'from-emerald-400 to-green-500',
+      text: "Report didn't arrive or something didn't work? We'll fix it immediately or refund you." },
+  ];
+
   // "Real benefits you'll feel in your life" — carduri cu tag + doua puncte.
   realBenefits = [
     { icon: '🧠', title: 'Understanding your patterns', tag: 'Inner peace', tagColor: 'bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300',
