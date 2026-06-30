@@ -19,9 +19,9 @@ export class Footer {
     ] },
     { title: 'Information', links: [
       { label: 'About Us', path: '/about' },
-      { label: 'Privacy Policy', path: '#' },
-      { label: 'Cookie Policy', path: '#' },
-      { label: 'Terms of Service', path: '#' },
+      { label: 'Privacy Policy', path: '/privacy-policy' },
+      { label: 'Cookie Policy', path: '/privacy-policy' },
+      { label: 'Terms of Service', path: '/privacy-policy' },
       { label: 'Help Center', path: '/help' },
       { label: 'Contact', path: '/contact' },
     ] },
