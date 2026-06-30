@@ -1,0 +1,30 @@
+# Configurare Netlify pentru frontend-ul Angular.
+# Pe https://netlify.com: Add new site > Import from GitHub > alegi acest repo.
+# Netlify citeste fisierul asta automat.
+
+[build]
+  # Codul frontend-ului e in subfolderul frontend/.
+  base = "frontend"
+  command = "npm run build"
+  # Angular pune fisierele finale aici (relativ la "base").
+  publish = "dist/frontend/browser"
+
+# --- Proxy catre backend ---
+# Orice cerere catre /api/... e trimisa mai departe spre backend-ul de pe Render.
+# Astfel frontend-ul cere tot "/api/..." (ca local) si NU avem probleme de CORS.
+#
+# IMPORTANT: inlocuieste URL-ul de mai jos cu cel real al backend-ului tau de pe
+# Render (ex. https://astra-backend.onrender.com) dupa ce-l deployezi.
+[[redirects]]
+  from = "/api/*"
+  to = "https://YOUR-BACKEND.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# --- Fallback pentru aplicatia Angular (SPA) ---
+# Orice alta ruta (ex. /account, /blog/ceva) e servita de index.html,
+# ca routerul Angular sa preia navigarea.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
