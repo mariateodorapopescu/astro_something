@@ -32,10 +32,11 @@
         Remember me
       </label>
 
-      <button type="submit"
+      <button type="submit" [disabled]="loading()"
               class="w-full rounded-xl bg-gradient-to-r from-violet-600 to-pink-500 px-6 py-3.5
-                     font-bold text-white shadow-lg shadow-violet-500/30 hover:opacity-90">
-        Log in
+                     font-bold text-white shadow-lg shadow-violet-500/30 hover:opacity-90
+                     disabled:opacity-60">
+        {{ loading() ? '⏳ ...' : 'Log in' }}
       </button>
     </form>
 

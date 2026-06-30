@@ -1,7 +1,7 @@
 """Schemele Pydantic = forma datelor care intra si ies prin API."""
 from datetime import date, datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class CalculateRequest(BaseModel):
@@ -77,6 +77,32 @@ class ContactRequest(BaseModel):
 class OkResponse(BaseModel):
     ok: bool
     message: str
+
+
+class RegisterRequest(BaseModel):
+    name: str
+    email: str
+    password: str = Field(min_length=8)
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class UserOut(BaseModel):
+    """Datele publice ale unui user — FARA parola/hash."""
+    id: int
+    name: str
+    email: str
+
+    model_config = {"from_attributes": True}
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserOut
 
 
 class CalculationItem(BaseModel):

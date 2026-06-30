@@ -3,11 +3,12 @@
 Porneste serverul cu:  uvicorn app.main:app --reload
 Documentatia automata a API-ului:  http://localhost:8000/docs
 """
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from . import numerology
+from .auth import create_token, get_current_user, hash_password, verify_password
 from .config import settings
 from .database import Base, engine, get_db
 from .models import (
@@ -17,6 +18,7 @@ from .models import (
     HumanDesignCalc,
     Partnership,
     Subscriber,
+    User,
 )
 from .schemas import (
     AscendantRequest,
@@ -27,10 +29,14 @@ from .schemas import (
     ContactRequest,
     HumanDesignRequest,
     HumanDesignResponse,
+    LoginRequest,
     OkResponse,
     PartnershipRequest,
     PartnershipResponse,
+    RegisterRequest,
     SubscribeRequest,
+    TokenResponse,
+    UserOut,
 )
 
 # Creeaza automat tabelele in baza de date (daca nu exista deja).
@@ -52,6 +58,43 @@ app.add_middleware(
 def health():
     """Endpoint simplu ca sa verifici ca backend-ul traieste."""
     return {"status": "ok"}
+
+
+@app.post("/api/register", response_model=TokenResponse, status_code=201)
+def register(req: RegisterRequest, db: Session = Depends(get_db)):
+    """Creeaza un cont nou. Parola e salvata DOAR ca hash bcrypt."""
+    existing = db.query(User).filter(User.email == req.email.lower()).first()
+    if existing:
+        raise HTTPException(status_code=409, detail="Exista deja un cont cu acest email.")
+
+    user = User(
+        name=req.name,
+        email=req.email.lower(),
+        password_hash=hash_password(req.password),
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return {"access_token": create_token(user.id), "user": user}
+
+
+@app.post("/api/login", response_model=TokenResponse)
+def login(req: LoginRequest, db: Session = Depends(get_db)):
+    """Verifica email + parola si returneaza un token JWT."""
+    user = db.query(User).filter(User.email == req.email.lower()).first()
+    # Acelasi mesaj pentru "email gresit" si "parola gresita" (nu dezvaluim care).
+    if user is None or not verify_password(req.password, user.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Email sau parola incorecte.",
+        )
+    return {"access_token": create_token(user.id), "user": user}
+
+
+@app.get("/api/me", response_model=UserOut)
+def me(current_user: User = Depends(get_current_user)):
+    """Ruta protejata: merge doar cu un token JWT valid in header-ul Authorization."""
+    return current_user
 
 
 @app.post("/api/calculate", response_model=CalculateResponse)

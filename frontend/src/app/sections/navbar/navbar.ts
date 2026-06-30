@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ThemeService } from '../../theme.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,6 +10,7 @@ import { ThemeService } from '../../theme.service';
 })
 export class Navbar {
   protected theme = inject(ThemeService);
+  protected auth = inject(AuthService);
 
   // Controleaza meniurile derulante (care e deschis).
   menuOpen = signal<'calc' | 'discover' | null>(null);

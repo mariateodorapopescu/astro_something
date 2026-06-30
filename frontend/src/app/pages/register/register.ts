@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-register',
@@ -8,23 +10,38 @@ import { RouterLink } from '@angular/router';
   templateUrl: './register.html',
 })
 export class Register {
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
   name = signal('');
   email = signal('');
   password = signal('');
   confirm = signal('');
+  loading = signal(false);
   message = signal<string | null>(null);
 
   submit(): void {
+    this.message.set(null);
     if (!this.name() || !this.email() || !this.password()) {
       this.message.set('Completeaza toate campurile.');
+      return;
+    }
+    if (this.password().length < 8) {
+      this.message.set('Parola trebuie sa aiba minim 8 caractere.');
       return;
     }
     if (this.password() !== this.confirm()) {
       this.message.set('Parolele nu coincid.');
       return;
     }
-    // TODO: inregistrare reala prin backend (/api/register).
-    this.message.set('Inregistrare demonstrativa — backend-ul nu e conectat inca.');
+    this.loading.set(true);
+    this.auth.register(this.name(), this.email(), this.password()).subscribe({
+      next: () => this.router.navigateByUrl('/'),
+      error: (err) => {
+        this.message.set(err?.status === 409 ? 'Exista deja un cont cu acest email.' : 'Nu pot contacta backend-ul.');
+        this.loading.set(false);
+      },
+    });
   }
 
   benefits = [

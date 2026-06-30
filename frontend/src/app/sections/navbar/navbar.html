@@ -82,16 +82,27 @@
         }
       </button>
 
-      <a routerLink="/login" class="hidden px-3 py-2 text-sm font-medium
-                  text-slate-700 hover:text-violet-600 dark:text-slate-200 sm:block">
-        Log in
-      </a>
+      @if (auth.isLoggedIn()) {
+        <span class="hidden text-sm font-medium text-slate-700 dark:text-slate-200 sm:block">
+          👋 {{ auth.user()?.name }}
+        </span>
+        <button type="button" (click)="auth.logout()"
+                class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold
+                       text-slate-700 hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/10">
+          Log out
+        </button>
+      } @else {
+        <a routerLink="/login" class="hidden px-3 py-2 text-sm font-medium
+                    text-slate-700 hover:text-violet-600 dark:text-slate-200 sm:block">
+          Log in
+        </a>
 
-      <a routerLink="/register" class="rounded-xl bg-gradient-to-r from-violet-600 to-pink-500
-                  px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-500/25
-                  hover:opacity-90">
-        ✨ Get Started
-      </a>
+        <a routerLink="/register" class="rounded-xl bg-gradient-to-r from-violet-600 to-pink-500
+                    px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-500/25
+                    hover:opacity-90">
+          ✨ Get Started
+        </a>
+      }
     </div>
   </nav>
 </header>

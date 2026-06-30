@@ -8,3 +8,7 @@ sqlalchemy==2.0.36
 psycopg2-binary==2.9.10
 # Citeste setarile (parole etc.) din fisierul .env
 pydantic-settings==2.7.1
+# Hash-uirea parolelor (bcrypt = lent intentionat, cu "sare")
+bcrypt==4.2.1
+# Token-uri JWT pentru autentificare
+PyJWT==2.10.1
