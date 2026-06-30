@@ -83,9 +83,11 @@
       </button>
 
       @if (auth.isLoggedIn()) {
-        <span class="hidden text-sm font-medium text-slate-700 dark:text-slate-200 sm:block">
+        <a routerLink="/account"
+           class="hidden text-sm font-medium text-slate-700 hover:text-violet-600
+                  dark:text-slate-200 dark:hover:text-violet-300 sm:block">
           👋 {{ auth.user()?.name }}
-        </span>
+        </a>
         <button type="button" (click)="auth.logout()"
                 class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold
                        text-slate-700 hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/10">

@@ -44,6 +44,20 @@ export class AuthService {
       .pipe(tap((res) => this.store(res)));
   }
 
+  /**
+   * Cere backend-ului utilizatorul curent pe baza token-ului (ruta protejata
+   * /api/me). Reimprospateaza datele salvate. Daca token-ul e invalid/expirat,
+   * interceptorul trimite 401 si componenta face logout.
+   */
+  me(): Observable<AuthUser> {
+    return this.http.get<AuthUser>('/api/me').pipe(
+      tap((u) => {
+        localStorage.setItem('user', JSON.stringify(u));
+        this.user.set(u);
+      }),
+    );
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');

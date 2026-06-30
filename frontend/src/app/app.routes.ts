@@ -15,6 +15,8 @@ import { Contact } from './pages/contact/contact';
 import { Help } from './pages/help/help';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
+import { Account } from './pages/account/account';
+import { authGuard } from './auth.guard';
 import { About } from './pages/about/about';
 import { Privacy } from './pages/privacy/privacy';
 import { CookiePolicy, TermsOfService, LegalDisclaimer } from './pages/legal/legal-pages';
@@ -35,6 +37,7 @@ export const routes: Routes = [
   { path: 'help', component: Help, title: 'ASTRA — Help Center' },
   { path: 'login', component: Login, title: 'ASTRA — Log in' },
   { path: 'register', component: Register, title: 'ASTRA — Create account' },
+  { path: 'account', component: Account, title: 'ASTRA — My Account', canActivate: [authGuard] },
   { path: 'about', component: About, title: 'ASTRA — About Us' },
   { path: 'privacy-policy', component: Privacy, title: 'ASTRA — Privacy Policy' },
   { path: 'cookie-policy', component: CookiePolicy, title: 'ASTRA — Cookie Policy' },
