@@ -12,6 +12,7 @@ import { BlogArticle } from './pages/blog/blog-article';
 import { Knowledge } from './pages/knowledge/knowledge';
 import { Tarot } from './pages/tarot/tarot';
 import { Contact } from './pages/contact/contact';
+import { Help } from './pages/help/help';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'ASTRA — Cosmic Map Calculator' },
@@ -26,5 +27,6 @@ export const routes: Routes = [
   { path: 'knowledge', component: Knowledge, title: 'ASTRA — Knowledge Center' },
   { path: 'tarot', component: Tarot, title: 'ASTRA — Tarot Online' },
   { path: 'contact', component: Contact, title: 'ASTRA — Contact' },
+  { path: 'help', component: Help, title: 'ASTRA — Help Center' },
   { path: '**', redirectTo: '' },
 ];

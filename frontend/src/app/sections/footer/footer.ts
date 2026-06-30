@@ -22,7 +22,7 @@ export class Footer {
       { label: 'Privacy Policy', path: '#' },
       { label: 'Cookie Policy', path: '#' },
       { label: 'Terms of Service', path: '#' },
-      { label: 'Help Center', path: '/knowledge' },
+      { label: 'Help Center', path: '/help' },
       { label: 'Contact', path: '/contact' },
     ] },
     { title: 'Account', links: [

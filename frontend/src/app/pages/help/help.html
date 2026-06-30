@@ -1,0 +1,72 @@
+<!-- HERO -->
+<section class="mx-auto max-w-4xl px-4 py-16 text-center lg:py-20">
+  <span class="inline-flex items-center gap-2 rounded-full border border-violet-300/50
+               bg-violet-100/60 px-4 py-1.5 text-sm font-medium text-violet-700
+               dark:border-violet-400/20 dark:bg-violet-500/10 dark:text-violet-300">
+    ❓ Help Center
+  </span>
+  <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-gradient sm:text-6xl">How can we help you?</h1>
+  <p class="mx-auto mt-5 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
+    Find answers to the most common questions about Destiny Matrix, Human Design, payments and account.
+  </p>
+
+  <!-- Search -->
+  <div class="mx-auto mt-8 flex max-w-2xl items-center gap-2 rounded-2xl border border-slate-200/70
+              bg-white/70 p-2 dark:border-white/10 dark:bg-white/5">
+    <span class="pl-3 text-slate-400">🔍</span>
+    <input type="text" [(ngModel)]="query" name="q" placeholder="Search Help Center..."
+           class="flex-1 bg-transparent px-2 py-2 text-slate-900 outline-none dark:text-white dark:placeholder-slate-500" />
+    <button type="button"
+            class="rounded-xl bg-gradient-to-r from-violet-600 to-pink-500 px-5 py-2.5 font-semibold text-white hover:opacity-90">
+      Search
+    </button>
+  </div>
+</section>
+
+<!-- BROWSE CATEGORIES -->
+<section class="mx-auto max-w-7xl px-4 py-8">
+  <h2 class="text-center text-3xl font-extrabold text-gradient sm:text-4xl">Browse categories</h2>
+  <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+    @for (c of categories; track c.title) {
+      <div class="rounded-3xl border border-slate-200/70 bg-white/70 p-6 text-center shadow-sm
+                  transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-white/5">
+        <span class="mx-auto grid h-12 w-12 place-items-center rounded-2xl text-xl {{ c.tint }}">{{ c.icon }}</span>
+        <h3 class="mt-4 font-bold text-violet-600 dark:text-violet-300">{{ c.title }}</h3>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ c.count }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- POPULAR ARTICLES -->
+<section class="mx-auto max-w-7xl px-4 py-12">
+  <h2 class="flex items-center justify-center gap-2 text-center text-3xl font-extrabold text-gradient sm:text-4xl">
+    ⭐ Popular articles
+  </h2>
+  <div class="mt-10 grid gap-6 md:grid-cols-2">
+    @for (a of popular; track a.title) {
+      <div class="rounded-3xl border border-slate-200/70 bg-white/70 p-7 shadow-sm
+                  transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-white/5">
+        <span class="grid h-11 w-11 place-items-center rounded-2xl bg-slate-100 text-xl dark:bg-white/10">{{ a.icon }}</span>
+        <h3 class="mt-4 text-lg font-bold text-violet-600 dark:text-violet-300">{{ a.title }}</h3>
+        <p class="mt-2 text-slate-600 dark:text-slate-400">{{ a.text }}</p>
+        <p class="mt-3 text-violet-500">›</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- DIDN'T FIND AN ANSWER -->
+<section class="mx-auto max-w-5xl px-4 py-12">
+  <div class="rounded-3xl border border-slate-200/70 bg-white/70 p-10 text-center shadow-sm
+              dark:border-white/10 dark:bg-white/5">
+    <span class="mx-auto block text-4xl">✉️</span>
+    <h2 class="mt-4 text-3xl font-extrabold text-gradient">Didn't find an answer?</h2>
+    <p class="mt-3 text-slate-600 dark:text-slate-400">Contact us — we'll respond as soon as possible!</p>
+    <a routerLink="/contact"
+       class="mt-7 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-pink-500
+              px-8 py-4 text-lg font-bold text-white shadow-lg shadow-violet-500/30 hover:opacity-90">
+      ➤ Write to us
+    </a>
+  </div>
+</section>
