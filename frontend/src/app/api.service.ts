@@ -41,13 +41,12 @@ export interface OkResult {
   message: string;
 }
 
-/** Un calcul salvat, asa cum vine din istoric (/api/my-calculations). */
-export interface CalculationItem {
+/** Un element din istoric (orice tip de calcul), de la /api/my-calculations. */
+export interface HistoryItem {
   id: number;
-  name: string;
-  birth_date: string;
-  life_path: number;
-  expression: number;
+  kind: 'individual' | 'partnership' | 'human_design' | 'ascendant';
+  title: string;
+  detail: string;
   created_at: string;
 }
 
@@ -105,7 +104,12 @@ export class ApiService {
   }
 
   /** Istoricul de calcule al userului logat (token atasat de interceptor). */
-  myCalculations(): Observable<CalculationItem[]> {
-    return this.http.get<CalculationItem[]>('/api/my-calculations');
+  myCalculations(): Observable<HistoryItem[]> {
+    return this.http.get<HistoryItem[]>('/api/my-calculations');
+  }
+
+  /** Sterge un calcul din istoric (doar al userului logat). */
+  deleteCalculation(kind: string, id: number): Observable<OkResult> {
+    return this.http.delete<OkResult>(`/api/my-calculations/${kind}/${id}`);
   }
 }

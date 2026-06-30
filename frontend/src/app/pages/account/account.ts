@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 import { AuthService, AuthUser } from '../../auth.service';
-import { ApiService, CalculationItem } from '../../api.service';
+import { ApiService, HistoryItem } from '../../api.service';
 
 /**
  * Pagina de cont. La initializare cere /api/me (ruta protejata) ca sa
@@ -25,9 +25,43 @@ export class Account implements OnInit {
   loading = signal(true);
   error = signal<string | null>(null);
 
-  // Istoricul de calcule al userului.
-  history = signal<CalculationItem[]>([]);
+  // Istoricul de calcule al userului (toate tipurile).
+  history = signal<HistoryItem[]>([]);
   historyLoading = signal(true);
+  deletingId = signal<string | null>(null);
+
+  // Eticheta + iconita pentru fiecare tip de calcul.
+  private readonly kindMeta: Record<HistoryItem['kind'], { label: string; icon: string }> = {
+    individual: { label: 'Individual', icon: '👤' },
+    partnership: { label: 'Partnership', icon: '💞' },
+    human_design: { label: 'Human Design', icon: '🧬' },
+    ascendant: { label: 'Ascendant', icon: '↑' },
+  };
+
+  kindLabel(kind: HistoryItem['kind']): string {
+    return this.kindMeta[kind].label;
+  }
+
+  kindIcon(kind: HistoryItem['kind']): string {
+    return this.kindMeta[kind].icon;
+  }
+
+  // Cheie unica pentru @for: id-ul se repeta intre tipuri, deci combinam.
+  rowKey(c: HistoryItem): string {
+    return `${c.kind}-${c.id}`;
+  }
+
+  remove(c: HistoryItem): void {
+    const key = this.rowKey(c);
+    this.deletingId.set(key);
+    this.api.deleteCalculation(c.kind, c.id).subscribe({
+      next: () => {
+        this.history.update((list) => list.filter((x) => this.rowKey(x) !== key));
+        this.deletingId.set(null);
+      },
+      error: () => this.deletingId.set(null),
+    });
+  }
 
   ngOnInit(): void {
     this.auth.me().subscribe({

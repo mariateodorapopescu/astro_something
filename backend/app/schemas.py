@@ -116,3 +116,16 @@ class CalculationItem(BaseModel):
 
     # Permite crearea direct dintr-un obiect SQLAlchemy.
     model_config = {"from_attributes": True}
+
+
+class HistoryItem(BaseModel):
+    """Un element din istoricul userului, indiferent de tipul de calcul.
+
+    `kind` spune din ce tabel vine (folosit si la stergere):
+    "individual" | "partnership" | "human_design" | "ascendant".
+    """
+    id: int
+    kind: str
+    title: str
+    detail: str
+    created_at: datetime

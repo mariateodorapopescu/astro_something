@@ -37,6 +37,7 @@ class Partnership(Base):
     __tablename__ = "partnerships"
 
     id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     name1 = Column(String, nullable=False)
     name2 = Column(String, nullable=False)
     score = Column(Integer, nullable=False)
@@ -48,6 +49,7 @@ class HumanDesignCalc(Base):
     __tablename__ = "human_designs"
 
     id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     name = Column(String, nullable=False)
     energy_type = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -58,6 +60,7 @@ class AscendantCalc(Base):
     __tablename__ = "ascendants"
 
     id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     sign = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 

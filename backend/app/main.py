@@ -33,6 +33,7 @@ from .schemas import (
     CalculateResponse,
     CalculationItem,
     ContactRequest,
+    HistoryItem,
     HumanDesignRequest,
     HumanDesignResponse,
     LoginRequest,
@@ -131,13 +132,22 @@ def calculate(
 
 
 @app.post("/api/calculate-partnership", response_model=PartnershipResponse)
-def calculate_partnership(req: PartnershipRequest, db: Session = Depends(get_db)):
+def calculate_partnership(
+    req: PartnershipRequest,
+    db: Session = Depends(get_db),
+    current_user: User | None = Depends(get_optional_user),
+):
     """Calculeaza compatibilitatea a doua persoane, o salveaza si o returneaza."""
     result = numerology.compatibility(
         req.name1, req.birth_date1, req.name2, req.birth_date2
     )
 
-    row = Partnership(name1=req.name1, name2=req.name2, score=result["score"])
+    row = Partnership(
+        user_id=current_user.id if current_user else None,
+        name1=req.name1,
+        name2=req.name2,
+        score=result["score"],
+    )
     db.add(row)
     db.commit()
 
@@ -145,19 +155,34 @@ def calculate_partnership(req: PartnershipRequest, db: Session = Depends(get_db)
 
 
 @app.post("/api/human-design", response_model=HumanDesignResponse)
-def human_design(req: HumanDesignRequest, db: Session = Depends(get_db)):
+def human_design(
+    req: HumanDesignRequest,
+    db: Session = Depends(get_db),
+    current_user: User | None = Depends(get_optional_user),
+):
     """Calculeaza tipul de energie Human Design, il salveaza si il returneaza."""
     result = numerology.human_design(req.name, req.birth_date)
-    db.add(HumanDesignCalc(name=req.name, energy_type=result["type"]))
+    db.add(HumanDesignCalc(
+        user_id=current_user.id if current_user else None,
+        name=req.name,
+        energy_type=result["type"],
+    ))
     db.commit()
     return result
 
 
 @app.post("/api/ascendant", response_model=AscendantResponse)
-def ascendant(req: AscendantRequest, db: Session = Depends(get_db)):
+def ascendant(
+    req: AscendantRequest,
+    db: Session = Depends(get_db),
+    current_user: User | None = Depends(get_optional_user),
+):
     """Estimeaza semnul ascendent, il salveaza si il returneaza."""
     result = numerology.ascendant(req.birth_date, req.hour, req.place)
-    db.add(AscendantCalc(sign=result["sign"]))
+    db.add(AscendantCalc(
+        user_id=current_user.id if current_user else None,
+        sign=result["sign"],
+    ))
     db.commit()
     return result
 
@@ -193,16 +218,66 @@ def list_calculations(db: Session = Depends(get_db)):
     )
 
 
-@app.get("/api/my-calculations", response_model=list[CalculationItem])
+@app.get("/api/my-calculations", response_model=list[HistoryItem])
 def my_calculations(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Istoricul de calcule al userului logat (cele mai noi primele)."""
-    return (
-        db.query(Calculation)
-        .filter(Calculation.user_id == current_user.id)
-        .order_by(Calculation.created_at.desc())
-        .limit(50)
-        .all()
-    )
+    """Istoricul complet al userului: toate tipurile de calcul, cele mai noi primele."""
+    items: list[HistoryItem] = []
+
+    for c in db.query(Calculation).filter(Calculation.user_id == current_user.id):
+        items.append(HistoryItem(
+            id=c.id, kind="individual", title=c.name,
+            detail=f"Life path {c.life_path} · Expression {c.expression}",
+            created_at=c.created_at,
+        ))
+    for p in db.query(Partnership).filter(Partnership.user_id == current_user.id):
+        items.append(HistoryItem(
+            id=p.id, kind="partnership", title=f"{p.name1} & {p.name2}",
+            detail=f"Compatibility {p.score}%", created_at=p.created_at,
+        ))
+    for h in db.query(HumanDesignCalc).filter(HumanDesignCalc.user_id == current_user.id):
+        items.append(HistoryItem(
+            id=h.id, kind="human_design", title=h.name,
+            detail=h.energy_type, created_at=h.created_at,
+        ))
+    for a in db.query(AscendantCalc).filter(AscendantCalc.user_id == current_user.id):
+        items.append(HistoryItem(
+            id=a.id, kind="ascendant", title="Ascendant",
+            detail=a.sign, created_at=a.created_at,
+        ))
+
+    items.sort(key=lambda i: i.created_at, reverse=True)
+    return items
+
+
+# Maparea kind -> model SQLAlchemy (folosita la stergere).
+_HISTORY_MODELS = {
+    "individual": Calculation,
+    "partnership": Partnership,
+    "human_design": HumanDesignCalc,
+    "ascendant": AscendantCalc,
+}
+
+
+@app.delete("/api/my-calculations/{kind}/{item_id}", response_model=OkResponse)
+def delete_calculation(
+    kind: str,
+    item_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Sterge un calcul din istoric — doar daca apartine userului logat."""
+    model = _HISTORY_MODELS.get(kind)
+    if model is None:
+        raise HTTPException(status_code=404, detail="Tip de calcul necunoscut.")
+
+    row = db.get(model, item_id)
+    if row is None or row.user_id != current_user.id:
+        # Acelasi 404 si daca nu exista, si daca e al altcuiva (nu dezvaluim).
+        raise HTTPException(status_code=404, detail="Calculul nu a fost gasit.")
+
+    db.delete(row)
+    db.commit()
+    return {"ok": True, "message": "Calcul sters."}
