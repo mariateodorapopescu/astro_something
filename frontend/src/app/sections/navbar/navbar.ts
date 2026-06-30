@@ -18,5 +18,6 @@ export class Navbar {
     { path: '/', label: 'Individual Matrix', icon: '👤' },
     { path: '/partnership-matrix', label: 'Partnership Matrix', icon: '💞' },
     { path: '/child-matrix', label: 'Child Matrix', icon: '🧒' },
+    { path: '/human-design', label: 'Human Design', icon: '🧬' },
   ];
 }
